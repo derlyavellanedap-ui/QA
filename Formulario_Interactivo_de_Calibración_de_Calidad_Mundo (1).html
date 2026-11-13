@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="tool">
+  <meta name="design-style" content="carbon">
+  <title>Matriz de Calibración de Calidad — Televentas Mundo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Carbon) */
+      --background: #ffffff;
+      --surface-container-low: #f4f4f4;
+      --surface-container: #f4f4f4;
+      --surface-container-high: #e0e0e0;
+
+      /* Ink */
+      --on-surface: #161616;
+      --on-surface-variant: #525252;
+
+      /* Rules */
+      --outline: #8d8d8d;
+      --outline-variant: #e0e0e0;
+
+      /* Accents */
+      --primary: #0f62fe;
+      --primary-hover: #0353e9;
+      --on-primary: #ffffff;
+      --primary-container: #d0e2ff;
+      --on-primary-container: #161616;
+      --secondary: #6f6f6f;
+      --tertiary: #198038;
+      --tertiary-container: #defbe6;
+      --on-tertiary-container: #0e6027;
+      --error: #da1e28;
+      --error-container: #fff1f1;
+      --on-error: #ffffff;
+      --on-error-container: #750e13;
+
+      /* Data series */
+      --data-1: #0f62fe;
+      --data-2: #6929c4;
+      --data-3: #005d5d;
+      --data-4: #9f1853;
+      --data-context: #8d8d8d;
+
+      /* Fonts */
+      --font-headline: 'IBM Plex Sans', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-label: 'IBM Plex Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.125rem;
+      --rounded-lg: 0.25rem;
+      --rounded-full: 0.75rem;
+
+      /* Style effects */
+      --shadow-1: 0 2px 6px rgb(0 0 0 / 0.1);
+      --shadow-2: 0 4px 12px rgb(0 0 0 / 0.12);
+      --rule: 1px solid var(--outline-variant);
+      --field-rule: 1px solid var(--outline);
+      --indicator: 2px solid var(--primary);
+      --indicator-error: 3px solid var(--error);
+      --indicator-ok: 3px solid var(--tertiary);
+      --indicator-warn: 3px solid var(--warning);
+
+      /* Shared semantic tokens */
+      --positive: #198038;
+      --warning: #8a6800;
+      --warning-container: #fcf4d6;
+      --on-warning-container: #473600;
+      --focus: #0f62fe;
+
+      /* Type scale (Focused Tool) */
+      --display-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size: 0.75rem;
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .page-grid {
+      display: grid;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1320px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Masthead */
+    .masthead {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-md);
+      padding-bottom: var(--space-lg);
+      border-bottom: var(--rule);
+    }
+    .masthead-copy {
+      max-width: 65ch;
+    }
+    .mono-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface-variant);
+      display: block;
+    }
+    .headline {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: 0;
+      margin: var(--space-xs) 0 var(--space-xs);
+    }
+    .headline strong { font-weight: 600; }
+    .lede {
+      margin: 0;
+      color: var(--on-surface-variant);
+      font-size: var(--body-size);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    /* Buttons (Carbon square corners) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid transparent;
+      border-radius: 0;
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+      font-size: 0.875rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out),
+                  box-shadow var(--dur-micro) var(--ease-out);
+      white-space: nowrap;
+    }
+    .btn:hover { background-color: var(--surface-container-high); }
+    .btn:active { opacity: 0.9; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--background);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .btn-secondary:hover {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--primary);
+      padding: var(--space-sm) var(--space-sm);
+    }
+    .btn-ghost:hover {
+      background-color: var(--surface-container);
+    }
+
+    .btn-danger-outline {
+      background-color: var(--background);
+      border-color: var(--error);
+      color: var(--error);
+    }
+    .btn-danger-outline:hover {
+      background-color: var(--error-container);
+      color: var(--on-error-container);
+    }
+    .btn-danger-armed {
+      background-color: var(--error);
+      border-color: var(--error);
+      color: var(--on-error);
+    }
+    .btn-danger-armed:hover {
+      background-color: var(--on-error-container);
+      color: var(--on-error);
+    }
+
+    .btn-compact {
+      min-height: 40px;
+      padding: var(--space-xs) var(--space-md);
+    }
+
+    /* Inline status toast */
+    .inline-feedback {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--tertiary);
+      padding: var(--space-xs) var(--space-sm);
+      background-color: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+      display: none;
+    }
+    .inline-feedback.is-visible { display: inline-flex; align-items: center; gap: var(--space-xs); }
+
+    /* Advisor Tabs Strip */
+    .advisor-tabs-wrap {
+      border-bottom: var(--rule);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      align-items: stretch;
+    }
+    .advisor-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-xs);
+      min-height: 58px;
+      min-width: 148px;
+      flex: 1 1 148px;
+      padding: var(--space-sm) var(--space-md);
+      background-color: var(--surface-container);
+      border: 0;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .advisor-tab:hover {
+      background-color: var(--surface-container-high);
+    }
+    .advisor-tab.is-active {
+      background-color: var(--background);
+      border-bottom: var(--indicator);
+    }
+    .advisor-tab.is-active.has-pec-tab {
+      border-bottom: var(--indicator-error);
+    }
+    .advisor-tab-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--space-sm);
+    }
+    .advisor-tab-slot {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface-variant);
+    }
+    .advisor-tab.is-active .advisor-tab-slot {
+      color: var(--on-surface);
+      font-weight: 600;
+    }
+    .advisor-tab-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .advisor-tab-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--space-xs);
+    }
+    .advisor-tab-score {
+      font-family: var(--font-label);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--on-surface);
+    }
+    .advisor-tab-score.score-crit { color: var(--error); font-weight: 600; }
+    .advisor-tab-score.score-ok { color: var(--tertiary); }
+    .advisor-tab-score.score-warn { color: var(--warning); }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 var(--space-sm);
+      border-radius: var(--rounded-full);
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .tag-blue { background-color: var(--primary-container); color: var(--on-primary-container); }
+    .tag-gray { background-color: var(--surface-container-high); color: var(--on-surface); }
+    .tag-red { background-color: var(--error-container); color: var(--on-error-container); }
+    .tag-green { background-color: var(--tertiary-container); color: var(--on-tertiary-container); }
+    .tag-warn { background-color: var(--warning-container); color: var(--on-warning-container); }
+
+    /* Workspace 2-column asymmetric layout (8 + 4) */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .main-column {
+      display: grid;
+      gap: var(--space-lg);
+    }
+    .summary-column {
+      display: grid;
+      gap: var(--space-md);
+    }
+
+    /* Flat gray layers */
+    .layer {
+      background-color: var(--surface-container);
+      padding: var(--space-md);
+    }
+    .layer .layer {
+      background-color: var(--surface-container-high);
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-sm);
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 300;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .section-title strong { font-weight: 600; }
+    .sub-heading {
+      font-family: var(--font-headline);
+      font-size: var(--subhead-size);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* Header Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-md);
+      align-items: end;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-surface-variant);
+    }
+    .field-input, .field-select {
+      height: 44px;
+      width: 100%;
+      background-color: var(--background);
+      border: 0;
+      border-bottom: var(--field-rule);
+      border-radius: var(--rounded);
+      padding: 0 var(--space-md);
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      transition: box-shadow var(--dur-micro) var(--ease-out);
+    }
+    .field-select {
+      padding-right: var(--space-xl);
+      cursor: pointer;
+    }
+    .field-input:focus, .field-select:focus {
+      box-shadow: inset 0 -2px 0 var(--primary);
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+
+    /* Modality Switcher */
+    .modality-bar {
+      margin-top: var(--space-md);
+      padding-top: var(--space-md);
+      border-top: var(--rule);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .modality-group {
+      display: inline-flex;
+      border: 1px solid var(--outline-variant);
+      background-color: var(--background);
+    }
+    .modality-btn {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border: 0;
+      background-color: transparent;
+      color: var(--on-surface-variant);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out);
+    }
+    .modality-btn:hover {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+    }
+    .modality-btn.is-active {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+    .modality-note {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+    }
+
+    /* Filter & Utility Strip */
+    .matrix-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+      border-bottom: var(--rule);
+    }
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+    .filter-btn {
+      min-height: 40px;
+      padding: var(--space-xs) var(--space-md);
+      background-color: var(--surface-container);
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+    }
+    .filter-btn:hover { background-color: var(--surface-container-high); color: var(--on-surface); }
+    .filter-btn.is-active {
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+
+    /* Evaluation Blocks */
+    .eval-block {
+      border: var(--rule);
+      background-color: var(--background);
+    }
+    .eval-block-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background-color: var(--surface-container);
+      border-bottom: var(--rule);
+    }
+    .eval-block-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+    .eval-block-stats {
+      font-family: var(--font-label);
+      font-size: 0.8125rem;
+      color: var(--on-surface);
+      font-weight: 500;
+    }
+
+    .eval-block-pec .eval-block-header {
+      border-left: var(--indicator-error);
+    }
+
+    .attr-list {
+      display: grid;
+    }
+    .attr-row {
+      padding: var(--space-md);
+      border-bottom: var(--rule);
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .attr-row:last-child { border-bottom: 0; }
+    .attr-row.is-failed-penc {
+      background-color: var(--surface-container-low);
+      box-shadow: inset 3px 0 0 var(--warning);
+    }
+    .attr-row.is-failed-pec {
+      background-color: var(--error-container);
+      box-shadow: inset 4px 0 0 var(--error);
+    }
+    .attr-row.is-hidden-filter { display: none; }
+
+    .attr-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-md);
+      align-items: start;
+    }
+    .attr-info {
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .attr-meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .attr-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      margin: 0;
+      line-height: 1.35;
+    }
+    .attr-weight {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+    }
+    .attr-earned {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+    }
+    .attr-earned.is-yes { color: var(--tertiary); }
+    .attr-earned.is-no { color: var(--error); }
+    .attr-earned.is-na { color: var(--secondary); }
+
+    /* Evaluation 3-state Radio Buttons */
+    .eval-controls {
+      display: inline-flex;
+      gap: var(--space-xs);
+      flex-shrink: 0;
+    }
+    .eval-opt {
+      min-width: 58px;
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-sm);
+      border: 1px solid var(--outline-variant);
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-label);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out),
+                  color var(--dur-micro) var(--ease-out),
+                  box-shadow var(--dur-micro) var(--ease-out);
+    }
+    .eval-opt:hover {
+      background-color: var(--surface-container);
+    }
+    .eval-opt.is-selected-yes {
+      background-color: var(--tertiary);
+      border-color: var(--tertiary);
+      color: var(--on-primary);
+      font-weight: 600;
+    }
+    .eval-opt.is-selected-no {
+      background-color: var(--error);
+      border-color: var(--error);
+      color: var(--on-error);
+      font-weight: 600;
+    }
+    .eval-opt.is-selected-na {
+      background-color: var(--on-surface-variant);
+      border-color: var(--on-surface-variant);
+      color: var(--on-primary);
+      font-weight: 600;
+    }
+
+    /* Descriptor Accordion */
+    .descriptor-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-xs);
+      padding: var(--space-xs) 0;
+      min-height: 36px;
+      background: transparent;
+      border: 0;
+      color: var(--primary);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .descriptor-toggle:hover { text-decoration: underline; }
+    .descriptor-chevron {
+      transition: transform var(--dur-short) var(--ease-out);
+    }
+    .descriptor-toggle[aria-expanded="true"] .descriptor-chevron {
+      transform: rotate(180deg);
+    }
+
+    .descriptor-panel {
+      display: none;
+      margin-top: var(--space-sm);
+      padding: var(--space-md);
+      background-color: var(--surface-container);
+      border-left: 2px solid var(--primary);
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--on-surface);
+    }
+    .descriptor-panel.is-open { display: grid; gap: var(--space-sm); }
+    .descriptor-block-label {
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface-variant);
+      margin-bottom: 2px;
+      display: block;
+    }
+    .descriptor-text {
+      margin: 0;
+      white-space: pre-line;
+      max-width: 72ch;
+    }
+
+    /* Feedback Textareas */
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+    .field-textarea {
+      width: 100%;
+      min-height: 120px;
+      background-color: var(--background);
+      border: 0;
+      border-bottom: var(--field-rule);
+      border-radius: var(--rounded);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    .field-textarea:focus {
+      box-shadow: inset 0 -2px 0 var(--primary);
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+
+    /* Summary Panel (Right Column) */
+    .pec-alert-banner {
+      display: none;
+      padding: var(--space-md);
+      background-color: var(--error-container);
+      border-left: 4px solid var(--error);
+      color: var(--on-error-container);
+      gap: var(--space-xs);
+    }
+    .pec-alert-banner.is-visible { display: grid; }
+    .pec-alert-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--error);
+      margin: 0;
+    }
+    .pec-alert-list {
+      margin: var(--space-xs) 0 0;
+      padding-left: var(--space-md);
+      font-size: 0.8125rem;
+    }
+
+    .kpi-tile {
+      background-color: var(--surface-container);
+      padding: var(--space-md);
+      border-bottom: var(--indicator);
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .kpi-tile.state-error { border-bottom: var(--indicator-error); }
+    .kpi-tile.state-ok { border-bottom: var(--indicator-ok); }
+    .kpi-tile.state-warn { border-bottom: var(--indicator-warn); }
+
+    .kpi-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .kpi-big-value {
+      font-family: var(--font-label);
+      font-size: 2.5rem;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--on-surface);
+    }
+    .kpi-big-value.val-error { color: var(--error); font-weight: 500; }
+    .kpi-big-value.val-ok { color: var(--tertiary); }
+    .kpi-big-value.val-warn { color: var(--warning); }
+
+    .sub-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-sm);
+      padding-top: var(--space-sm);
+      border-top: var(--rule);
+    }
+    .sub-metric {
+      display: grid;
+      gap: 2px;
+    }
+    .sub-metric-val {
+      font-family: var(--font-label);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--on-surface);
+    }
+    .sub-metric-helper {
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* Block Breakdown Bars */
+    .block-bars {
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .bar-item {
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .bar-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-sm);
+      font-size: 0.8125rem;
+    }
+    .bar-name { font-weight: 500; color: var(--on-surface); }
+    .bar-nums { font-family: var(--font-label); font-size: 0.75rem; color: var(--on-surface-variant); }
+    .bar-track {
+      height: 8px;
+      width: 100%;
+      background-color: var(--surface-container-high);
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background-color: var(--data-1);
+      transition: width var(--dur-short) var(--ease-out);
+    }
+    .bar-fill.is-perfect { background-color: var(--tertiary); }
+    .bar-fill.is-low { background-color: var(--error); }
+
+    /* Deviations list */
+    .deviations-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .deviation-item {
+      padding: var(--space-xs) var(--space-sm);
+      background-color: var(--background);
+      border-left: 3px solid var(--warning);
+      font-size: 0.8125rem;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+    .deviation-item.is-pec {
+      border-left-color: var(--error);
+      background-color: var(--error-container);
+      color: var(--on-error-container);
+    }
+
+    /* Comparative Table View */
+    .compare-view { display: none; gap: var(--space-lg); }
+    .compare-view.is-active { display: grid; }
+    .audit-view { display: grid; gap: var(--space-lg); }
+    .audit-view.is-hidden { display: none; }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border: var(--rule);
+    }
+    table.carbon-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    .carbon-table thead th {
+      background-color: var(--surface-container-high);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-surface);
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+      white-space: nowrap;
+    }
+    .carbon-table tbody tr {
+      border-bottom: var(--rule);
+      background-color: var(--background);
+    }
+    .carbon-table tbody tr:nth-child(even) {
+      background-color: var(--surface-container-low);
+    }
+    .carbon-table tbody tr:hover {
+      background-color: var(--primary-container);
+    }
+    .carbon-table td {
+      padding: var(--space-sm) var(--space-md);
+      vertical-align: middle;
+    }
+    .num-cell {
+      font-family: var(--font-label);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .compare-kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    .footer-source {
+      padding-top: var(--space-md);
+      border-top: var(--rule);
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .workspace-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .page-grid { padding: var(--space-sm); gap: var(--space-md); }
+      .form-grid { grid-template-columns: 1fr; }
+      .feedback-grid { grid-template-columns: 1fr; }
+      .attr-top { grid-template-columns: 1fr; }
+      .eval-controls { width: 100%; }
+      .eval-opt { flex: 1; }
+      .advisor-tab { min-width: 120px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-grid">
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="masthead-copy">
+        <span class="mono-label">Televentas Mundo · Control de Calidad CX</span>
+        <h1 class="headline">Calibración de Calidad en <strong>Ventas Telefónicas</strong></h1>
+        <p class="lede">Auditoría multi-asesor para modalidades <strong>No Ventas</strong> y <strong>Ventas</strong> con cálculo PENC en tiempo real y anulación automática por Error Crítico (PEC).</p>
+      </div>
+      <div class="toolbar-actions">
+        <span id="global-feedback" class="inline-feedback" role="status" aria-live="polite"></span>
+        <button type="button" class="btn btn-secondary btn-compact" onclick="loadReferencePreset()">
+          Cargar ejemplo de fuente
+        </button>
+        <button type="button" class="btn btn-primary btn-compact" onclick="exportAllCsv()">
+          Exportar CSV (6 asesores)
+        </button>
+        <button type="button" id="btn-reset-all" class="btn btn-danger-outline btn-compact" onclick="handleResetAll(this)">
+          Reiniciar todo
+        </button>
+      </div>
+    </header>
+
+    <!-- 6 Advisor Tabs + Comparative View Tab -->
+    <nav class="advisor-tabs-wrap" aria-label="Selector de asesores y vista comparativa">
+      <button type="button" class="advisor-tab is-active" id="tab-advisor-0" onclick="selectTab(0)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 1</span>
+          <span class="tag tag-gray" id="tab-mod-0">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-0">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-0">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-advisor-1" onclick="selectTab(1)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 2</span>
+          <span class="tag tag-gray" id="tab-mod-1">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-1">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-1">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-advisor-2" onclick="selectTab(2)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 3</span>
+          <span class="tag tag-gray" id="tab-mod-2">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-2">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-2">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-advisor-3" onclick="selectTab(3)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 4</span>
+          <span class="tag tag-gray" id="tab-mod-3">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-3">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-3">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-advisor-4" onclick="selectTab(4)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 5</span>
+          <span class="tag tag-gray" id="tab-mod-4">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-4">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-4">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-advisor-5" onclick="selectTab(5)">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Asesor 6</span>
+          <span class="tag tag-gray" id="tab-mod-5">No Venta</span>
+        </div>
+        <div class="advisor-tab-name" id="tab-name-5">Sin asignar</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-score-5">Pendiente</span>
+        </div>
+      </button>
+
+      <button type="button" class="advisor-tab" id="tab-compare" onclick="selectTab('compare')">
+        <div class="advisor-tab-top">
+          <span class="advisor-tab-slot">Resumen</span>
+          <span class="tag tag-blue">6 Slots</span>
+        </div>
+        <div class="advisor-tab-name">Comparativa</div>
+        <div class="advisor-tab-meta">
+          <span class="advisor-tab-score" id="tab-compare-count">0 / 6 auditados</span>
+        </div>
+      </button>
+    </nav>
+
+    <!-- Single Advisor Audit Workspace -->
+    <main id="audit-view" class="audit-view">
+      <div class="workspace-grid">
+        <!-- Left Column: Form, Matrices & Feedback -->
+        <div class="main-column">
+          <!-- Header Fields & Modality -->
+          <section class="layer" aria-labelledby="hdr-section-title">
+            <div class="section-head">
+              <div>
+                <span class="mono-label" id="active-slot-label">Auditoría activa · Asesor 1</span>
+                <h2 class="section-title" id="hdr-section-title">Registro de <strong>Cabecera y Modalidad</strong></h2>
+              </div>
+              <button type="button" id="btn-reset-advisor" class="btn btn-ghost btn-compact" onclick="handleResetAdvisor(this)">
+                Limpiar asesor actual
+              </button>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label class="field-label" for="inp-recording-id">ID Grabación / Llamada</label>
+                <input class="field-input" id="inp-recording-id" type="text" placeholder="Ej. REC-2026-0841" oninput="updateHeaderField('recordingId', this.value)">
+              </div>
+              <div class="field">
+                <label class="field-label" for="inp-agent-name">Nombre del Asesor (Evaluado)</label>
+                <input class="field-input" id="inp-agent-name" type="text" placeholder="Nombre y apellido del ejecutivo" oninput="updateHeaderField('agentName', this.value)">
+              </div>
+              <div class="field">
+                <label class="field-label" for="inp-evaluator-name">Nombre Evaluador / Líder</label>
+                <input class="field-input" id="inp-evaluator-name" type="text" placeholder="Líder o analista QA" oninput="updateHeaderField('evaluatorName', this.value)">
+              </div>
+              <div class="field">
+                <label class="field-label" for="inp-channel">Área / Canal</label>
+                <select class="field-select" id="inp-channel" onchange="updateHeaderField('channel', this.value)">
+                  <option value="Inbound">Inbound</option>
+                  <option value="Outbound">Outbound</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label" for="inp-typification">Tipificación de la llamada</label>
+                <input class="field-input" id="inp-typification" type="text" list="typification-presets" placeholder="Ej. No Venta - Sin Factibilidad" oninput="updateHeaderField('typification', this.value)">
+                <datalist id="typification-presets">
+                  <option value="Venta Hogar (Fijo)"></option>
+                  <option value="Venta Móvil (Portabilidad / Línea Nueva)"></option>
+                  <option value="Venta Convergente (Hogar + Móvil)"></option>
+                  <option value="No Venta - Sin Factibilidad Técnica"></option>
+                  <option value="No Venta - Precio / Competencia"></option>
+                  <option value="No Venta - Cliente lo pensará / Segundo contacto"></option>
+                  <option value="No Venta - Corta llamada / No interesado"></option>
+                </datalist>
+              </div>
+              <div class="field">
+                <label class="field-label" for="inp-date">Fecha de auditoría</label>
+                <input class="field-input" id="inp-date" type="date" onchange="updateHeaderField('date', this.value)">
+              </div>
+            </div>
+
+            <div class="modality-bar">
+              <div>
+                <span class="field-label" style="display:block; margin-bottom: var(--space-xs);">Modalidad de Calibración</span>
+                <div class="modality-group" role="group" aria-label="Selector de modalidad">
+                  <button type="button" class="modality-btn is-active" id="mod-btn-no_venta" onclick="setModality('no_venta')">
+                    No Ventas (60% PENC · 40% PEC)
+                  </button>
+                  <button type="button" class="modality-btn" id="mod-btn-venta" onclick="setModality('venta')">
+                    Ventas (15% PENC · 85% PEC)
+                  </button>
+                </div>
+              </div>
+              <div class="modality-note" id="modality-meta-note">
+                15 atributos PENC + 8 atributos PEC
+              </div>
+            </div>
+          </section>
+
+          <!-- Filter and Quick Actions -->
+          <div class="matrix-controls">
+            <div class="filter-pills" role="group" aria-label="Filtrar atributos">
+              <button type="button" class="filter-btn is-active" id="filter-all" onclick="setFilter('all')">Todos</button>
+              <button type="button" class="filter-btn" id="filter-pending" onclick="setFilter('pending')">Pendientes</button>
+              <button type="button" class="filter-btn" id="filter-failed" onclick="setFilter('failed')">Con desvíos (No)</button>
+              <button type="button" class="filter-btn" id="filter-pec" onclick="setFilter('pec')">Solo PEC (Críticos)</button>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="btn btn-compact" id="btn-toggle-all-desc" onclick="toggleAllDescriptors()">
+                Expandir descriptores
+              </button>
+              <button type="button" class="btn btn-secondary btn-compact" onclick="markPendingAsYes()">
+                Marcar pendientes "Sí"
+              </button>
+            </div>
+          </div>
+
+          <!-- PENC Matrix Container -->
+          <section aria-labelledby="penc-matrix-heading">
+            <div class="section-head">
+              <div>
+                <span class="mono-label" id="penc-weight-label">Sección PENC · Precisión de Error No Crítico (60,00%)</span>
+                <h2 class="section-title" id="penc-matrix-heading">Atributos <strong>Blandos (PENC)</strong></h2>
+              </div>
+              <span class="mono-label" id="penc-earned-header">0,0% / 60,0%</span>
+            </div>
+            <div id="penc-blocks-container" style="display: grid; gap: var(--space-md);"></div>
+          </section>
+
+          <!-- PEC Matrix Container -->
+          <section aria-labelledby="pec-matrix-heading">
+            <div class="section-head">
+              <div>
+                <span class="mono-label" id="pec-weight-label">Sección PEC · Precisión de Error Crítico (Regla 0%)</span>
+                <h2 class="section-title" id="pec-matrix-heading">Errores <strong>Críticos (PEC)</strong></h2>
+              </div>
+              <span class="mono-label" id="pec-status-header">Sin afectación</span>
+            </div>
+            <div id="pec-blocks-container" style="display: grid; gap: var(--space-md);"></div>
+          </section>
+
+          <!-- Feedback Textareas -->
+          <section class="layer" aria-labelledby="feedback-heading">
+            <div class="section-head">
+              <div>
+                <span class="mono-label">Retroalimentación cualitativa</span>
+                <h2 class="section-title" id="feedback-heading">Observaciones y <strong>Aspectos a Mejorar</strong></h2>
+              </div>
+            </div>
+            <div class="feedback-grid">
+              <div class="field">
+                <label class="field-label" for="txt-observations">Observaciones</label>
+                <textarea class="field-textarea" id="txt-observations" placeholder="Registra hallazgos puntuales de la grabación, contexto de la llamada o validaciones realizadas…" oninput="updateHeaderField('observations', this.value)"></textarea>
+              </div>
+              <div class="field">
+                <label class="field-label" for="txt-improvements">Aspectos a mejorar</label>
+                <textarea class="field-textarea" id="txt-improvements" placeholder="Define compromisos accionables para el asesor en saludo, sondeo, argumentación, manejo de objeciones o cierre…" oninput="updateHeaderField('improvements', this.value)"></textarea>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column: Real-Time Results Summary -->
+        <aside class="summary-column" aria-label="Resumen de resultados en tiempo real">
+          <!-- Critical Error Immediate Alert -->
+          <div id="pec-alert-banner" class="pec-alert-banner" role="alert">
+            <h3 class="pec-alert-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              Afectación PEC — Nota Final 0,0%
+            </h3>
+            <p style="margin:0; font-size:0.8125rem;">Se ha registrado incumplimiento en atributo(s) de Error Crítico. La calificación total pasa automáticamente a 0%.</p>
+            <ul class="pec-alert-list" id="pec-alert-list"></ul>
+          </div>
+
+          <!-- Primary KPI Card -->
+          <div class="kpi-tile" id="kpi-final-card">
+            <div class="kpi-head">
+              <span class="mono-label">Nota Final de Calibración</span>
+              <span class="tag tag-gray" id="kpi-status-tag">Sin evaluar</span>
+            </div>
+            <div class="kpi-big-value" id="kpi-final-score">—</div>
+            <div class="sub-metric-helper" id="kpi-formula-note">Modalidad No Ventas: PENC (60%) + PEC (40%)</div>
+
+            <div class="sub-metrics-grid">
+              <div class="sub-metric">
+                <span class="mono-label">Total PENC</span>
+                <span class="sub-metric-val" id="kpi-penc-score">0,0%</span>
+                <span class="sub-metric-helper" id="kpi-penc-max">de 60,0% blando</span>
+              </div>
+              <div class="sub-metric">
+                <span class="mono-label">Afectación PEC</span>
+                <span class="sub-metric-val" id="kpi-pec-score">+40,0%</span>
+                <span class="sub-metric-helper" id="kpi-pec-helper">0 errores críticos</span>
+              </div>
+              <div class="sub-metric">
+                <span class="mono-label">Cumplimiento PENC</span>
+                <span class="sub-metric-val" id="kpi-penc-pct">0,0%</span>
+                <span class="sub-metric-helper">base 100% del bloque</span>
+              </div>
+              <div class="sub-metric">
+                <span class="mono-label">Cobertura</span>
+                <span class="sub-metric-val" id="kpi-coverage">0 / 23</span>
+                <span class="sub-metric-helper" id="kpi-na-count">N/A: 0 ítems</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Block Breakdown Card -->
+          <div class="layer" style="display:grid; gap: var(--space-md);">
+            <div class="section-head" style="margin-bottom:0;">
+              <h3 class="sub-heading">Desglose por Bloque PENC</h3>
+              <span class="mono-label" id="breakdown-mod-tag">No Ventas</span>
+            </div>
+            <div id="block-bars-container" class="block-bars"></div>
+          </div>
+
+          <!-- Deviations Summary Card -->
+          <div class="layer" style="display:grid; gap: var(--space-sm);">
+            <div class="section-head" style="margin-bottom:0;">
+              <h3 class="sub-heading">Desvíos Detectados</h3>
+              <span class="mono-label" id="deviations-count-label">0 ítems</span>
+            </div>
+            <div id="deviations-container">
+              <p style="margin:0; font-size:0.8125rem; color: var(--on-surface-variant);">No se han marcado incumplimientos («No») en esta auditoría.</p>
+            </div>
+          </div>
+
+          <!-- Export Single Advisor -->
+          <div class="layer" style="display:grid; gap: var(--space-sm);">
+            <span class="mono-label">Acciones de exportación</span>
+            <button type="button" class="btn btn-secondary" onclick="exportSingleAdvisorReport()">
+              Descargar ficha del asesor (.txt)
+            </button>
+            <button type="button" class="btn" onclick="copyAdvisorSummary()">
+              Copiar resumen al portapapeles
+            </button>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- Comparative View (6 Advisors Side-by-Side) -->
+    <section id="compare-view" class="compare-view" aria-labelledby="compare-heading">
+      <div class="section-head" style="margin-bottom:0;">
+        <div>
+          <span class="mono-label">Consolidado de Calibración · Hasta 6 Asesores</span>
+          <h2 class="section-title" id="compare-heading">Tabla Comparativa de <strong>Auditorías</strong></h2>
+        </div>
+        <button type="button" class="btn btn-primary btn-compact" onclick="exportAllCsv()">
+          Descargar CSV Consolidado
+        </button>
+      </div>
+
+      <div class="compare-kpis" id="compare-kpis"></div>
+
+      <div class="table-scroll">
+        <table class="carbon-table">
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Asesor</th>
+              <th>ID Grabación</th>
+              <th>Canal</th>
+              <th>Modalidad</th>
+              <th>Evaluador / Fecha</th>
+              <th class="num-cell">PENC</th>
+              <th>Estado PEC</th>
+              <th class="num-cell">Nota Final</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="compare-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer-source">
+      <span>Fuente: Matriz de Calidad y Calibración Televentas Mundo (PENC / PEC — Modalidades Ventas y No Ventas).</span>
+      <span>Los datos se guardan automáticamente en la sesión del cuaderno.</span>
+    </footer>
+  </div>
+
+  <api-shim></api-shim>
+
+  <script>
+    /* =========================================================================
+       1. DATA MODEL (100% grounded in source matrices)
+       ========================================================================= */
+    const MODALITIES = {
+      no_venta: {
+        key: `no_venta`,
+        label: `No Ventas`,
+        shortLabel: `No Venta`,
+        pencMax: 60,
+        pecBase: 40,
+        formulaText: `Modalidad No Ventas: PENC (máx. 60%) + PEC (40% sin error) = 100% | Con error PEC = 0%`,
+        blocks: [
+          { id: `captar`, name: `CAPTAR LA ATENCIÓN`, weight: 10 },
+          { id: `sondeo`, name: `SONDEO`, weight: 14 },
+          { id: `argumentacion`, name: `ARGUMENTACIÓN`, weight: 14 },
+          { id: `objeciones`, name: `GESTIÓN DE OBJECIONES`, weight: 14 },
+          { id: `cierre`, name: `CIERRE`, weight: 8 }
+        ],
+        pencItems: [
+          {
+            id: `nv_penc_1`,
+            blockId: `captar`,
+            title: `Saludo corporativo`,
+            weight: 2,
+            focus: `PENC`,
+            descriptor: `Este ítem considera que el ejecutivo realice saludo corporativo, presentándose con PRIMER nombre y PRIMER apellido contestando cuando ingresa la llamada (dentro de los 10 segundos de que entra la llamada; esto se evalúa para ambos servicios IN / OUT) y que es ejecutivo de Mundo.\n• Inbound (IN): "Bienvenido a la plataforma Ventas de Mundo, mi nombre es (Nombre y Apellido)…"\n• Outbound (OUT): "Buen@s días mi nombre es (Nombre y Apellido), ejecutivo del área de Ventas de Mundo, ¿hablo con xxx?"`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_2`,
+            blockId: `captar`,
+            title: `Identificación del cliente`,
+            weight: 2,
+            focus: `PENC`,
+            descriptor: `El ejecutivo debe identificar el nombre del cliente al inicio de la interacción.\n• Inbound: "Bienvenido a la plataforma Ventas de Mundo, mi nombre es (Nombre y Apellido). ¿Con quién tengo el gusto de hablar?"\n• Outbound: "Buen@s días mi nombre es (Nombre y Apellido), ejecutivo del área de Ventas de Mundo, ¿hablo con xxx?"`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_3`,
+            blockId: `captar`,
+            title: `Motivo llamado`,
+            weight: 2,
+            focus: `PENC`,
+            descriptor: `El ejecutivo debe consultar y confirmar el motivo del llamado del cliente para orientar correctamente la gestión. En caso de Outbound, el ejecutivo debe indicar el motivo de la llamada.`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_4`,
+            blockId: `captar`,
+            title: `Tono de voz dinámico y que transmite seguridad`,
+            weight: 2,
+            focus: `PENC`,
+            descriptor: `Este ítem evalúa que el ejecutivo utilice un tono de voz que capte la Atención del Cliente con dinamismo y entusiasmo. Además, que transmita seguridad para dar confianza al cliente (debe evitar ser monótono en la forma de expresarse).`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_5`,
+            blockId: `captar`,
+            title: `Frase de Impacto (Outbound) / Frase de presentación (Inbound)`,
+            weight: 2,
+            focus: `PENC`,
+            descriptor: `• Inbound: Evalúa que el ejecutivo utilice la frase de impacto "¿QUÉ DESEA CONTRATAR?" ya sea hogar o móvil. Ejemplo: "Juan, cuénteme, ¿qué servicio desea contratar?".\n• Outbound: Evalúa que el ejecutivo lance una Frase de Impacto que capta la atención del cliente, asegurando que no haga una convergencia con el servicio hogar ni una exclusividad por ser cliente Mundo. Ejemplos: "Juan, lo llamo porque queremos darle la posibilidad de disfrutar del internet más rápido de Latinoamérica ¡con un 50% de descuento los primeros 2 meses!" / "María, la llamo para que disfrute de estar siempre comunicada con planes desde los $3.490".\nEl ejecutivo podrá personalizar esta frase siempre que cumpla con los parámetros establecidos (si la llamada es venta, el atributo no debería aplicar para medición).`,
+            itemObs: `El ítem posee solo ejemplos; se puede personalizar siempre y cuando sea para generar interés en el servicio (Outbound).`,
+            notes: `Revisar con el cliente la posibilidad de que el ejecutivo solo dé un motivo comercial de la llamada.`
+          },
+          {
+            id: `nv_penc_6`,
+            blockId: `sondeo`,
+            title: `Realiza preguntas para identificar la situación actual del cliente`,
+            weight: 7,
+            focus: `PENC`,
+            descriptor: `Evalúa que el ejecutivo realice las preguntas necesarias que permitan identificar la situación actual del cliente, con el objetivo de obtener información para ajustar el ofrecimiento del servicio a sus necesidades (servicio de interés, utilización del servicio, cuánto paga actualmente, servicios contratados, uso de servicios por los cuales no consulta, etc.). En caso de que el cliente muestre interés en la venta de forma inmediata o en un plan específico y se pueda continuar con la contratación, no será necesario realizar más preguntas.`,
+            itemObs: `Si bien el cliente puede manifestar interés inmediato o solicitar directamente un plan específico, es fundamental realizar un sondeo mínimo que permita validar que el servicio solicitado se ajusta correctamente a sus necesidades, prevenir errores de contratación y asegurar una asesoría adecuada.`,
+            notes: `Revisar la posibilidad de unificar este atributo. Al unificar, si el ejecutivo comete un error en alguno de los aspectos que conforman el ítem (por ejemplo, buen sondeo pero sin escucha activa), se calificará de forma negativa.`
+          },
+          {
+            id: `nv_penc_7`,
+            blockId: `sondeo`,
+            title: `El sondeo aporta valor para generar ambiente de conversación con el cliente / Escucha activa`,
+            weight: 7,
+            focus: `PENC`,
+            descriptor: `Evalúa que el ejecutivo genere un sondeo efectivo: preguntas que aporten información relevante para la venta (evitar preguntas con respuesta sí o no salvo confirmación; evitar realizar preguntas a modo de "interrogatorio").\nRespecto a la escucha activa: que el ejecutivo no consulte información que el cliente ya ha indicado (salvo a modo de confirmación) y que el ofrecimiento y conversación se ajusten a lo que el cliente va comentando. Si el cliente quiere indagar más planes, consultar qué busca: ¿más gigas, menos gigas, oferta sin cambios en los precios?, etc.`,
+            itemObs: `No se puede aplicar excepción de medición en caso de venta efectiva, ya que la escucha activa es parte importante de la llamada y aplica tanto en venta como en no venta.`,
+            notes: ``
+          },
+          {
+            id: `nv_penc_8`,
+            blockId: `argumentacion`,
+            title: `Destaca las ventajas y beneficios de la oferta, más que centrarse en solo las características`,
+            weight: 14 / 3,
+            focus: `PENC`,
+            descriptor: `Evalúa que el ejecutivo argumente utilizando la información obtenida del cliente para potenciar la oferta: completar características con beneficios personalizados y/o ventajas generales, realizando demostraciones de "para qué sirve" o "qué disfrutará" con la oferta entregada para aumentar el deseo de compra.\nEl ejecutivo no podrá indicar que nuestras características son exclusivas de MUNDO cuando son características generales con otros operadores (ejemplo: "WiFi 6").`,
+            itemObs: `No se puede considerar dejar ventajas y beneficios del servicio para la lectura de un contrato (este solo se da si no se logra la validación biométrica). Se busca ir entregando detalle en una conversación fluida; las características pertenecen exclusivamente al ítem dominio de la oferta.`,
+            notes: ``
+          },
+          {
+            id: `nv_penc_9`,
+            blockId: `argumentacion`,
+            title: `Utiliza lenguaje formal (trato adecuado) y personalización. Agradecer esperas`,
+            weight: 14 / 3,
+            focus: `PECU`,
+            descriptor: `Evalúa lenguaje formal evitando modismos que denoten lenguaje coloquial. Solo será permitido el uso de "mi estimado" máximo 4 veces; de lo contrario se afectará de forma negativa.\nDebe indicar durante la conversación al menos una vez el nombre correcto del cliente. No debe tutear al cliente (salvo que el cliente lo solicite); debe tratar de usted sin alternar tú y usted.\nDebe solicitar el tiempo de espera si es necesario y agradecer al retomar (ejemplo: "Juan, muchas gracias por su tiempo a la espera, le comento…"). No debe usar diminutivos como "un momentico", "un minutico", "aval".`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_10`,
+            blockId: `argumentacion`,
+            title: `Demuestra dominio de la oferta`,
+            weight: 14 / 3,
+            focus: `PECU`,
+            descriptor: `Evalúa conocimiento completo y correcto respecto a las características del plan ofertado:\n• Móvil: Minutos incluidos (controlados o libres), GB incluidos (controlados o libres), identificación de RRSS libres incluidas, valores del plan, duración de valores en promoción si aplica.\n• Fijo: Velocidad ofertada (si no menciona que es simétrica igual se evalúa positivamente dejando observación), rango de canales, incluye 7 señales propias de Mundo y canales locales, telefonía ilimitada a fijos y móviles, valor real del plan, valor en promoción y su duración si aplica.`,
+            itemObs: `También se deben incluir las características de las velocidades asimétricas. Cuando el cliente realice preguntas respecto al uso o funcionamiento del servicio y se tenga claridad de la información, si no se entrega, se omite o se responde de manera incorrecta, se afectará dominio de la oferta.`,
+            notes: ``
+          },
+          {
+            id: `nv_penc_11`,
+            blockId: `objeciones`,
+            title: `Acepta y Busca Entender la Objeción del cliente`,
+            weight: 7,
+            focus: `PECU`,
+            descriptor: `Evalúa que el ejecutivo sea capaz de indagar los motivos del rechazo del cliente y mostrar empatía respecto a dichos motivos. Si el cliente no indica motivo del rechazo, indagar qué le hace falta para decidir contratar; si responde, argumentar demostrando que entiende sus motivaciones antes de contraargumentar. Se considera positivo al menos un intento de indagar en el motivo de la objeción.`,
+            itemObs: `Si el cliente no presenta ninguna objeción, queda como No Aplica (N/A) en ambas modalidades (Inbound / Outbound).`,
+            notes: `Revisar con el cliente corporativo la unificación de los dos ítems de objeciones (empatía + manejo dos veces). Al unificarse, un error en cualquiera de los aspectos afectará el ítem completo.`
+          },
+          {
+            id: `nv_penc_12`,
+            blockId: `objeciones`,
+            title: `Contesta la Objeción intentando convencer al cliente`,
+            weight: 7,
+            focus: `PECU`,
+            descriptor: `Evalúa que el ejecutivo responda la objeción basado en lo que la motiva, con el objetivo de intentar convencer al cliente para que contrate (siempre que el cliente indique el motivo). Si al consultar los motivos de su negativa el cliente no contesta, no se penalizará este ítem.\nSi el ejecutivo contesta al menos una vez la objeción se considera positivo (dejando observación si pudo haberlo gestionado mejor). Si el cliente muestra molestia o incomodidad con el llamado o con la indagación, no intentar contestar la objeción no será incumplimiento.`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_13`,
+            blockId: `cierre`,
+            title: `Lanza el cierre oportuno de la venta cuando el cliente da indicios de compra`,
+            weight: 8 / 3,
+            focus: `PECU`,
+            descriptor: `Evalúa generar el cierre oportuno cuando termina de argumentar sin objeciones, cuando el cliente muestra actitud positiva ("está buena la oferta", "interesante") o cuando pregunta por los siguientes pasos para contratar.\nSe debe evitar la pregunta "¿desea contratar el servicio?"; en cambio usar llamado a la acción: "Para la contratación, en este momento solo necesitamos que nos envíe su cédula de identidad vigente y sin bloqueos y realizamos la lectura de su contrato verbal" / "La instalación se la podemos generar en 48 hrs., cuénteme, ¿le acomoda más de 09:00 a 18:00 hrs?"`,
+            itemObs: ``,
+            notes: ``
+          },
+          {
+            id: `nv_penc_14`,
+            blockId: `cierre`,
+            title: `Entrega información Relevante para cierre de la venta`,
+            weight: 8 / 3,
+            focus: `PECU`,
+            descriptor: `Evalúa entregar obligatoriamente la información necesaria de los siguientes pasos para hacer efectiva la contratación:\n• Documentos: Cédula de identidad vigente y sin bloqueos; Boleta de Servicios Básicos (Luz, Agua o Gas) con información clara de dirección y número de cliente.\n• Plazo de Instalación Fijo (según agendamiento técnico) y Plazo Entrega Móvil (5 días hábiles).\n• Proceso de facturación si es cliente nuevo o existente.\n• En venta móvil: explicar proceso de activación de la SIM (prepago, pospago o línea nueva) y biometría si retira en sucursal.\n• Confirmar dirección del cliente mencionando calles o puntos cercanos para asegurar entrega de SIM o instalación hogar.`,
+            itemObs: `Aplicaría mencionar algunas de estas características y medirlas dentro del atributo de ventas y beneficios.`,
+            notes: ``
+          },
+          {
+            id: `nv_penc_15`,
+            blockId: `cierre`,
+            title: `Tipificación de la llamada y Captura de Datos`,
+            weight: 8 / 3,
+            focus: `PECN`,
+            descriptor: `Evalúa que el ejecutivo deje el registro o tipificación de la llamada de acuerdo al resultado de esta y solicite un segundo número de contacto (si el cliente no lo comparte no insistir; si lo entrega, dejarlo registrado en CRM). Para los casos de referidos debe dejar un comentario.`,
+            itemObs: ``,
+            notes: ``
+          }
+        ],
+        pecItems: [
+          {
+            id: `nv_pec_1`,
+            title: `Ejecutivo realiza comentarios inadecuados, groseros o irónicos. Cualquier actitud que demuestre falta de respeto al cliente`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente que el ejecutivo mantenga una actitud de respeto hacia el cliente gestionando el proceso completo de la llamada sin cortar al cliente (salvo problemas técnicos). Debe evitar palabras que agredan directa o indirectamente, usar tonos de voz inadecuados acompañados de palabras irónicas, despectivas, sarcásticas, de burla o soeces. Se afecta si discute o falta al respeto generando molestia o mala experiencia.`,
+            itemObs: ``
+          },
+          {
+            id: `nv_pec_2`,
+            title: `Desprestigia la compañía, servicio y pares`,
+            focus: `PECN`,
+            descriptor: `Se evalúa positivamente que el ejecutivo nunca atente contra el prestigio de la compañía, pares, áreas o de las herramientas disponibles para la atención.`,
+            itemObs: ``
+          },
+          {
+            id: `nv_pec_3`,
+            title: `Cliente desatendido`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente que cuando sea necesario dejar en espera al cliente lo mantenga informado de las gestiones y lo retome agradeciendo la espera (120 segundos), sin dejarlo abandonado. Es posible exceder los 120 segundos si informa previamente al cliente la demora con una breve explicación.\nAdemás, no dejar el canal abierto durante o al finalizar la llamada donde el cliente escuche conversaciones con terceros, y gestionar completa la llamada sin cortar sin previa despedida.`,
+            itemObs: `Se añade como Error Crítico específico dentro del bloque PEC.`
+          },
+          {
+            id: `nv_pec_4`,
+            title: `Induce a la baja del Producto`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente que en ningún momento utilice como estrategia para convencer al cliente la posibilidad de "probar el servicio" o que "lo puede dar de baja cuando quiera".\nDistinto es cuando el cliente consulta por condiciones del contrato; en ese caso se sugiere responder: "Este servicio es sin compromiso de permanencia, por lo que puede tomar la decisión que estime conveniente sobre su servicio en cualquier momento".`,
+            itemObs: ``
+          },
+          {
+            id: `nv_pec_5`,
+            title: `Entrega argumentos no válidos para la venta. Cualquier gestión que se considere fraudulenta`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente que el ejecutivo entregue de manera veraz y correcta toda la información respecto a la oferta, promociones, condiciones y proceso de contratación (se considera incorrecto cualquier argumento no validado por comunicado previo).\nAnte dirección en estado Ocupado con oferta Conectado donde el cliente indique no haber contratado, no mencionar que está ocupada por otro cliente. Consultar primero si alguien en el domicilio contrató antes; si no, indicar que el domicilio no figura habilitado actualmente y ofrecer tomar datos y boleta para revisar factibilidad y devolver el llamado.`,
+            itemObs: ``
+          },
+          {
+            id: `nv_pec_6`,
+            title: `Abandono de la llamada ante negativa del cliente`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente que ante objeción del cliente intente gestionarla para convencerlo, no abandonando la llamada sin contraargumentación a la negativa. Si el cliente está evidentemente molesto no se afectará el ítem (solo observación), ni tampoco si el ejecutivo intenta contraargumentar pero el cliente interrumpe y no lo deja continuar.`,
+            itemObs: ``
+          },
+          {
+            id: `nv_pec_7`,
+            title: `Desaprovechamiento comercial`,
+            focus: `PECC`,
+            descriptor: `Evalúa positivamente que ante imposibilidad de venta o durante una venta busque alternativas:\n• Cliente sin Factibilidad Técnica (Inhabilitado, Cargado, Fuera de Red Mundo) o No acepta Mundo Fijo → ofertar Mundo Móvil (si hay espacio y el cliente no está molesto).\n• Cliente consulta por algún servicio Mundo Fijo → ofrecer los servicios por los que no consultó; durante venta Fijo → ofrecer Mundo Móvil.\n• Revisión incorrecta de factibilidad perdiendo oportunidad de venta (salvo direcciones con evidente dificultad de ubicación).\n• Incumplimiento de compromiso de segundo contacto (hasta el día hábil siguiente o fecha comprometida).\n• Solicitud de Referido si existe la posibilidad.`,
+            itemObs: `Cuando hay venta hogar o cliente sin factibilidad corresponde ofrecer servicios móviles como alternativa complementaria y valor adicional, sin insistir en exceso.`
+          },
+          {
+            id: `nv_pec_8`,
+            title: `Ingreso incorrecto de la oferta`,
+            focus: `PECC`,
+            descriptor: `Evalúa positivamente que el ejecutivo realice correctamente la gestión de ingreso de la venta:\n• Dirección correcta y Número a portar correcto.\n• Documentación correcta (CI vigente sin bloqueos, boleta de servicios básicos luz/agua/gas para Canales Externos, extracto de portabilidad si procede).\n• No generar venta a tercero.\n• Comentarios en oferta Móvil: datos del cliente Mundo que refiere (Solo Televenta Mundo).\n• Plan ingresado corresponde al informado en audio.\n• Lectura completa y correcta del Script de contrato verbal.`,
+            itemObs: ``
+          }
+        ]
+      },
+      venta: {
+        key: `venta`,
+        label: `Ventas`,
+        shortLabel: `Venta`,
+        pencMax: 15,
+        pecBase: 85,
+        formulaText: `Modalidad Ventas: PENC (3 × 5% = máx. 15%) + PEC (85% sin error) = 100% | Con error PEC = 0%`,
+        blocks: [
+          { id: `captar`, name: `CAPTAR LA ATENCIÓN`, weight: 5 },
+          { id: `cierre`, name: `CIERRE Y REGISTRO`, weight: 5 },
+          { id: `comercial`, name: `GESTIÓN COMERCIAL`, weight: 5 }
+        ],
+        pencItems: [
+          {
+            id: `v_penc_1`,
+            blockId: `captar`,
+            title: `Saludo Corporativo`,
+            weight: 5,
+            focus: `PENC`,
+            descriptor: `Este ítem considera que el ejecutivo realice saludo corporativo, presentándose con PRIMER nombre y PRIMER apellido contestando cuando ingresa la llamada (dentro de los 10 segundos de que entra la llamada; esto se evalúa para ambos servicios IN / OUT) y que es ejecutivo de Mundo.\n• Inbound (IN): "Bienvenido a la plataforma Ventas de Mundo, mi nombre es (Nombre y Apellido)…"\n• Outbound (OUT): "Buen@s días mi nombre es (Nombre y Apellido), ejecutivo del área de Ventas de Mundo, ¿hablo con xxx?"`,
+            itemObs: `En modalidad Ventas este atributo pondera 5% dentro del bloque blando PENC.`,
+            notes: ``
+          },
+          {
+            id: `v_penc_2`,
+            blockId: `cierre`,
+            title: `Tipificación de la llamada y Captura de Datos`,
+            weight: 5,
+            focus: `PECN`,
+            descriptor: `Evalúa que el ejecutivo deje el registro o tipificación de la llamada de acuerdo al resultado de esta y solicite un segundo número de contacto (si el cliente no lo comparte no insistir; si lo entrega, dejarlo registrado en CRM). Para los casos de referidos debe dejar un comentario.`,
+            itemObs: `En modalidad Ventas pondera 5% dentro del bloque blando PENC (complementado por la validación crítica en PEC).`,
+            notes: ``
+          },
+          {
+            id: `v_penc_3`,
+            blockId: `comercial`,
+            title: `Desaprovechamiento comercial`,
+            weight: 5,
+            focus: `PECC`,
+            descriptor: `Evalúa positivamente que durante la llamada de venta Fijo se ofrezca Mundo Móvil como alternativa complementaria, o los servicios Mundo Fijo por los cuales el cliente no ha consultado, además de solicitar Referido si existe la posibilidad (siempre que el cliente no muestre molestia ni cierre el espacio). También evalúa la correcta revisión de factibilidad y cumplimiento de segundo contacto.`,
+            itemObs: `Cuando el ejecutivo realiza la venta de un servicio hogar corresponde presentar servicios móviles como valor adicional que muestre la variedad de soluciones, sin insistencia excesiva.`,
+            notes: ``
+          }
+        ],
+        pecItems: [
+          {
+            id: `v_pec_1`,
+            title: `Demuestra dominio de la oferta`,
+            focus: `PEC`,
+            descriptor: `Evalúa conocimiento completo y correcto respecto a las características del plan contratado:\n• Móvil: Minutos incluidos (controlados o libres), GB incluidos, RRSS libres incluidas, valores del plan y duración promocional.\n• Fijo: Velocidad ofertada (dejar observación si no menciona simetría), rango de canales, 7 señales propias Mundo y canales locales, telefonía ilimitada a fijos y móviles, valor real y promocional con su duración.\nIncluye responder correctamente dudas de uso o funcionamiento.`,
+            itemObs: `En modalidad Ventas efectiva, el dominio incorrecto u omisión de características del plan vendido constituye Error Crítico (PEC).`
+          },
+          {
+            id: `v_pec_2`,
+            title: `Entrega información Relevante para cierre de la venta`,
+            focus: `PEC`,
+            descriptor: `Evalúa entregar obligatoriamente información de siguientes pasos para concretar la venta:\n• Documentos (CI vigente sin bloqueos, boleta de servicios básicos luz/agua/gas con dirección y número de cliente).\n• Plazos (Instalación Fijo según agendamiento; Entrega Móvil 5 días hábiles).\n• Facturación cliente nuevo o existente y activación de SIM / biometría en sucursal.\n• Confirmación de dirección con calles o puntos cercanos.`,
+            itemObs: `En modalidad Ventas efectiva, omitir información crítica de cierre e instalación/activación constituye Error Crítico (PEC).`
+          },
+          {
+            id: `v_pec_3`,
+            title: `Tipificación de la llamada y Captura de Datos (Validación Crítica de Venta)`,
+            focus: `PEC`,
+            descriptor: `Verifica la correcta captura crítica de datos de contratación y registro de tipificación de venta efectiva en CRM, incluyendo segundo teléfono de contacto si fue proporcionado y comentarios de referido cuando corresponda.`,
+            itemObs: `Incluido en el bloque de Error Crítico (EC) de la planilla de Calibración Ventas.`
+          },
+          {
+            id: `v_pec_4`,
+            title: `Ejecutivo realiza comentarios inadecuados, groseros o irónicos. Cualquier actitud que demuestre falta de respeto al cliente`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente mantener actitud de respeto durante toda la llamada sin cortar al cliente (salvo problemas técnicos), evitando palabras agresivas, ironía, desprecio, sarcasmo, burla o lenguaje soez.`,
+            itemObs: ``
+          },
+          {
+            id: `v_pec_5`,
+            title: `Induce a la baja del Producto`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente no utilizar como argumento de venta "probar el servicio" o "lo puede dar de baja cuando quiera". Ante consulta de permanencia, responder que el servicio es sin compromiso de permanencia.`,
+            itemObs: ``
+          },
+          {
+            id: `v_pec_6`,
+            title: `Entrega argumentos no válidos para la venta. Cualquier gestión que se considere fraudulenta`,
+            focus: `PECN`,
+            descriptor: `Evalúa positivamente entregar información veraz y validada por comunicado previo sobre oferta, promociones, condiciones y factibilidad (respetando la confidencialidad en direcciones en estado Ocupado).`,
+            itemObs: ``
+          },
+          {
+            id: `v_pec_7`,
+            title: `Ingreso incorrecto de la oferta`,
+            focus: `PECC`,
+            descriptor: `Evalúa ingreso exacto de la venta: dirección y número a portar correctos, documentación válida (CI vigente, boleta de servicios, extracto de portabilidad), no venta a tercero, comentarios de referido en móvil, correspondencia exacta entre plan ingresado y audio, y lectura completa y correcta del script de contrato verbal.`,
+            itemObs: ``
+          }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       2. APPLICATION STATE (6 independent advisor slots)
+       ========================================================================= */
+    const STORAGE_SCHEMA_VERSION = 1;
+    const ADVISOR_COUNT = 6;
+
+    function getTodayIso() {
+      return `2026-11-13`;
+    }
+
+    function createEmptyAdvisor(index) {
+      return {
+        slotIndex: index,
+        recordingId: ``,
+        agentName: ``,
+        evaluatorName: ``,
+        channel: `Inbound`,
+        typification: ``,
+        date: getTodayIso(),
+        modality: `no_venta`,
+        observations: ``,
+        improvements: ``,
+        scores: {
+          no_venta: {},
+          venta: {}
+        }
+      };
+    }
+
+    let appState = {
+      version: STORAGE_SCHEMA_VERSION,
+      activeTab: 0, // 0..5 or 'compare'
+      advisors: Array.from({ length: ADVISOR_COUNT }, (_, i) => createEmptyAdvisor(i))
+    };
+
+    let currentFilter = `all`;
+    let openDescriptors = {};
+    let allDescriptorsExpanded = false;
+    let feedbackTimer = null;
+
+    /* =========================================================================
+       3. SCORING ENGINE
+       ========================================================================= */
+    function formatPct(num) {
+      return num.toFixed(1).replace(`.`, `,`) + `%`;
+    }
+
+    function formatWeight(num) {
+      return (Math.round(num * 100) / 100).toFixed(2).replace(`.`, `,`) + `%`;
+    }
+
+    function computeAdvisorMetrics(advisor) {
+      const modKey = advisor.modality === `venta` ? `venta` : `no_venta`;
+      const mod = MODALITIES[modKey];
+      const modScores = (advisor.scores && advisor.scores[modKey]) ? advisor.scores[modKey] : {};
+
+      let pencApplicableWeight = 0;
+      let pencEarnedRaw = 0;
+      let pencYesCount = 0;
+      let pencNoCount = 0;
+      let pencNaCount = 0;
+      let pencPendingCount = 0;
+
+      const blockStats = {};
+      for (const b of mod.blocks) {
+        blockStats[b.id] = {
+          id: b.id,
+          name: b.name,
+          nominalWeight: b.weight,
+          applicableWeight: 0,
+          earnedRaw: 0,
+          naCount: 0,
+          pendingCount: 0
+        };
+      }
+
+      const failedPencItems = [];
+
+      for (const item of mod.pencItems) {
+        const val = modScores[item.id] || null;
+        const bs = blockStats[item.blockId];
+        if (val === `yes`) {
+          pencYesCount++;
+          pencApplicableWeight += item.weight;
+          pencEarnedRaw += item.weight;
+          if (bs) {
+            bs.applicableWeight += item.weight;
+            bs.earnedRaw += item.weight;
+          }
+        } else if (val === `no`) {
+          pencNoCount++;
+          pencApplicableWeight += item.weight;
+          if (bs) {
+            bs.applicableWeight += item.weight;
+          }
+          failedPencItems.push(item);
+        } else if (val === `na`) {
+          pencNaCount++;
+          if (bs) bs.naCount++;
+        } else {
+          pencPendingCount++;
+          pencApplicableWeight += item.weight;
+          if (bs) {
+            bs.applicableWeight += item.weight;
+            bs.pendingCount++;
+          }
+        }
+      }
+
+      // Normalize PENC earned to mod.pencMax when N/A items exist
+      let pencEarned = 0;
+      let pencCompliancePct = 0;
+      if (pencApplicableWeight > 0) {
+        pencEarned = (pencEarnedRaw / pencApplicableWeight) * mod.pencMax;
+        pencCompliancePct = (pencEarnedRaw / pencApplicableWeight) * 100;
+      } else if (pencNaCount === mod.pencItems.length) {
+        pencEarned = mod.pencMax;
+        pencCompliancePct = 100;
+      }
+
+      // Evaluate PEC items
+      let pecYesCount = 0;
+      let pecNoCount = 0;
+      let pecNaCount = 0;
+      let pecPendingCount = 0;
+      const failedPecItems = [];
+
+      for (const item of mod.pecItems) {
+        const val = modScores[item.id] || null;
+        if (val === `yes`) pecYesCount++;
+        else if (val === `no`) {
+          pecNoCount++;
+          failedPecItems.push(item);
+        }
+        else if (val === `na`) pecNaCount++;
+        else pecPendingCount++;
+      }
+
+      const totalItems = mod.pencItems.length + mod.pecItems.length;
+      const evaluatedCount = totalItems - (pencPendingCount + pecPendingCount);
+      const totalNaCount = pencNaCount + pecNaCount;
+      const hasPecFailure = pecNoCount > 0;
+
+      let pecEarned = 0;
+      let finalScore = null;
+      if (evaluatedCount > 0) {
+        if (hasPecFailure) {
+          pecEarned = 0;
+          finalScore = 0;
+        } else {
+          pecEarned = mod.pecBase;
+          finalScore = pencEarned + pecEarned;
+        }
+      }
+
+      // Compute normalized per-block display
+      const blockBreakdown = mod.blocks.map((b) => {
+        const bs = blockStats[b.id];
+        const scale = pencApplicableWeight > 0 ? (mod.pencMax / pencApplicableWeight) : 1;
+        const maxNormalized = bs.applicableWeight * scale;
+        const earnedNormalized = bs.earnedRaw * scale;
+        const pct = maxNormalized > 0 ? (earnedNormalized / maxNormalized) * 100 : (bs.naCount > 0 ? 100 : 0);
+        return {
+          id: b.id,
+          name: b.name,
+          nominalWeight: b.weight,
+          maxNormalized,
+          earnedNormalized,
+          pct,
+          allNa: bs.applicableWeight === 0 && bs.naCount > 0
+        };
+      });
+
+      return {
+        mod,
+        modKey,
+        totalItems,
+        evaluatedCount,
+        pendingCount: pencPendingCount + pecPendingCount,
+        totalNaCount,
+        pencYesCount,
+        pencNoCount,
+        pencNaCount,
+        pencPendingCount,
+        pencApplicableWeight,
+        pencEarned,
+        pencCompliancePct,
+        pecYesCount,
+        pecNoCount,
+        pecNaCount,
+        pecPendingCount,
+        hasPecFailure,
+        pecEarned,
+        finalScore,
+        failedPencItems,
+        failedPecItems,
+        blockBreakdown
+      };
+    }
+
+    /* =========================================================================
+       4. PERSISTENCE (notebookAppApi only)
+       ========================================================================= */
+    let saveQueued = false;
+
+    async function persistState() {
+      if (!window.notebookAppApi || typeof window.notebookAppApi.setAppState !== `function`) return;
+      if (saveQueued) return;
+      saveQueued = true;
+      setTimeout(async () => {
+        saveQueued = false;
+        try {
+          await window.notebookAppApi.setAppState(appState);
+        } catch (err) {
+          // Graceful no-op if host limits exceeded
+        }
+      }, 150);
+    }
+
+    async function loadPersistedState() {
+      if (!window.notebookAppApi || typeof window.notebookAppApi.getAppState !== `function`) return;
+      try {
+        const saved = await window.notebookAppApi.getAppState();
+        if (saved && Array.isArray(saved.advisors) && saved.advisors.length === ADVISOR_COUNT) {
+          appState = saved;
+        }
+      } catch (err) {
+        // Keep clean default state
+      }
+    }
+
+    /* =========================================================================
+       5. EVENT HANDLERS (hoisted function declarations)
+       ========================================================================= */
+    function showInlineFeedback(msg) {
+      const el = document.getElementById(`global-feedback`);
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add(`is-visible`);
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        el.classList.remove(`is-visible`);
+      }, 3000);
+    }
+
+    function selectTab(tab) {
+      appState.activeTab = tab;
+      renderAll();
+      persistState();
+    }
+
+    function getActiveAdvisor() {
+      const idx = typeof appState.activeTab === `number` ? appState.activeTab : 0;
+      return appState.advisors[idx] || appState.advisors[0];
+    }
+
+    function updateHeaderField(field, value) {
+      const adv = getActiveAdvisor();
+      adv[field] = value;
+      renderTabs();
+      persistState();
+    }
+
+    function setModality(modKey) {
+      const adv = getActiveAdvisor();
+      adv.modality = modKey === `venta` ? `venta` : `no_venta`;
+      renderAll();
+      persistState();
+    }
+
+    function setFilter(filterKey) {
+      currentFilter = filterKey;
+      const ids = [`all`, `pending`, `failed`, `pec`];
+      for (const id of ids) {
+        const btn = document.getElementById(`filter-` + id);
+        if (btn) btn.classList.toggle(`is-active`, id === filterKey);
+      }
+      renderMatrices();
+    }
+
+    function setAttributeScore(itemId, value) {
+      const adv = getActiveAdvisor();
+      const modKey = adv.modality === `venta` ? `venta` : `no_venta`;
+      if (!adv.scores) adv.scores = { no_venta: {}, venta: {} };
+      if (!adv.scores[modKey]) adv.scores[modKey] = {};
+
+      // Clicking already selected option toggles back to pending (null)
+      if (adv.scores[modKey][itemId] === value) {
+        delete adv.scores[modKey][itemId];
+      } else {
+        adv.scores[modKey][itemId] = value;
+      }
+
+      renderTabs();
+      renderMatrices();
+      renderSummary();
+      persistState();
+    }
+
+    function toggleDescriptor(itemId) {
+      openDescriptors[itemId] = !openDescriptors[itemId];
+      const panel = document.getElementById(`desc-panel-` + itemId);
+      const btn = document.getElementById(`desc-btn-` + itemId);
+      if (panel) panel.classList.toggle(`is-open`, !!openDescriptors[itemId]);
+      if (btn) btn.setAttribute(`aria-expanded`, openDescriptors[itemId] ? `true` : `false`);
+    }
+
+    function toggleAllDescriptors() {
+      allDescriptorsExpanded = !allDescriptorsExpanded;
+      const adv = getActiveAdvisor();
+      const mod = MODALITIES[adv.modality === `venta` ? `venta` : `no_venta`];
+      for (const item of mod.pencItems) openDescriptors[item.id] = allDescriptorsExpanded;
+      for (const item of mod.pecItems) openDescriptors[item.id] = allDescriptorsExpanded;
+      const btn = document.getElementById(`btn-toggle-all-desc`);
+      if (btn) btn.textContent = allDescriptorsExpanded ? `Contraer descriptores` : `Expandir descriptores`;
+      renderMatrices();
+    }
+
+    function markPendingAsYes() {
+      const adv = getActiveAdvisor();
+      const modKey = adv.modality === `venta` ? `venta` : `no_venta`;
+      const mod = MODALITIES[modKey];
+      if (!adv.scores[modKey]) adv.scores[modKey] = {};
+
+      let changed = 0;
+      for (const item of [...mod.pencItems, ...mod.pecItems]) {
+        if (!adv.scores[modKey][item.id]) {
+          adv.scores[modKey][item.id] = `yes`;
+          changed++;
+        }
+      }
+      if (changed > 0) {
+        renderTabs();
+        renderMatrices();
+        renderSummary();
+        persistState();
+        showInlineFeedback(`Se completaron ${changed} ítems pendientes como «Sí».`);
+      } else {
+        showInlineFeedback(`No hay ítems pendientes por completar.`);
+      }
+    }
+
+    function loadReferencePreset() {
+      const adv = getActiveAdvisor();
+      if (adv.modality === `venta`) {
+        adv.recordingId = `REC-VTA-4092`;
+        adv.agentName = adv.agentName || `Carolina Méndez`;
+        adv.evaluatorName = adv.evaluatorName || `Líder QA Mundo`;
+        adv.channel = `Outbound`;
+        adv.typification = `Venta Hogar (Fijo)`;
+        adv.date = getTodayIso();
+        adv.scores.venta = {
+          v_penc_1: `yes`,
+          v_penc_2: `no`,
+          v_penc_3: `yes`,
+          v_pec_1: `yes`,
+          v_pec_2: `yes`,
+          v_pec_3: `yes`,
+          v_pec_4: `yes`,
+          v_pec_5: `yes`,
+          v_pec_6: `yes`,
+          v_pec_7: `yes`
+        };
+        adv.observations = `Ejemplo de referencia modalidad Ventas (basado en hoja de calibración): Cumple saludo corporativo y ofrecimiento complementario móvil, sin error crítico en ingreso de oferta.`;
+        adv.improvements = `Reforzar registro de segundo número de contacto y tipificación exacta en CRM al cierre de la venta.`;
+      } else {
+        adv.recordingId = `REC-NV-1845`;
+        adv.agentName = adv.agentName || `Matías Rojas`;
+        adv.evaluatorName = adv.evaluatorName || `Líder QA Mundo`;
+        adv.channel = `Outbound`;
+        adv.typification = `No Venta - Precio / Competencia`;
+        adv.date = getTodayIso();
+        adv.scores.no_venta = {
+          nv_penc_1: `no`,
+          nv_penc_2: `yes`,
+          nv_penc_3: `yes`,
+          nv_penc_4: `yes`,
+          nv_penc_5: `yes`,
+          nv_penc_6: `yes`,
+          nv_penc_7: `no`,
+          nv_penc_8: `no`,
+          nv_penc_9: `yes`,
+          nv_penc_10: `yes`,
+          nv_penc_11: `yes`,
+          nv_penc_12: `yes`,
+          nv_penc_13: `yes`,
+          nv_penc_14: `yes`,
+          nv_penc_15: `yes`,
+          nv_pec_1: `yes`,
+          nv_pec_2: `yes`,
+          nv_pec_3: `yes`,
+          nv_pec_4: `yes`,
+          nv_pec_5: `yes`,
+          nv_pec_6: `yes`,
+          nv_pec_7: `yes`,
+          nv_pec_8: `yes`
+        };
+        adv.observations = `Ejemplo de referencia modalidad No Ventas (calibración fuente): Se detecta omisión en saludo corporativo dentro de 10s, falta de escucha activa en sondeo y argumentación centrada solo en características técnicas sin beneficios.`;
+        adv.improvements = `Aplicar saludo corporativo completo con nombre y apellido al inicio; conectar los atributos del plan con beneficios concretos según las necesidades detectadas en el sondeo.`;
+      }
+      renderAll();
+      persistState();
+      showInlineFeedback(`Ejemplo de calibración cargado en Asesor ${adv.slotIndex + 1}.`);
+    }
+
+    function handleResetAdvisor(btn) {
+      if (btn.dataset.armed !== `true`) {
+        btn.dataset.armed = `true`;
+        btn.textContent = `Confirmar limpieza`;
+        setTimeout(() => {
+          if (btn.dataset.armed === `true`) {
+            btn.dataset.armed = `false`;
+            btn.textContent = `Limpiar asesor actual`;
+          }
+        }, 3500);
+        return;
+      }
+      btn.dataset.armed = `false`;
+      btn.textContent = `Limpiar asesor actual`;
+      const idx = typeof appState.activeTab === `number` ? appState.activeTab : 0;
+      appState.advisors[idx] = createEmptyAdvisor(idx);
+      renderAll();
+      persistState();
+      showInlineFeedback(`Asesor ${idx + 1} reiniciado.`);
+    }
+
+    function handleResetAll(btn) {
+      if (btn.dataset.armed !== `true`) {
+        btn.dataset.armed = `true`;
+        btn.classList.remove(`btn-danger-outline`);
+        btn.classList.add(`btn-danger-armed`);
+        btn.textContent = `Confirmar reinicio total`;
+        setTimeout(() => {
+          if (btn.dataset.armed === `true`) {
+            btn.dataset.armed = `false`;
+            btn.classList.remove(`btn-danger-armed`);
+            btn.classList.add(`btn-danger-outline`);
+            btn.textContent = `Reiniciar todo`;
+          }
+        }, 3500);
+        return;
+      }
+      btn.dataset.armed = `false`;
+      btn.classList.remove(`btn-danger-armed`);
+      btn.classList.add(`btn-danger-outline`);
+      btn.textContent = `Reiniciar todo`;
+      appState.advisors = Array.from({ length: ADVISOR_COUNT }, (_, i) => createEmptyAdvisor(i));
+      openDescriptors = {};
+      renderAll();
+      persistState();
+      showInlineFeedback(`Se reiniciaron los 6 registros de calibración.`);
+    }
+
+    /* =========================================================================
+       6. EXPORT FUNCTIONS
+       ========================================================================= */
+    function escapeCsv(val) {
+      const str = String(val == null ? `` : val).replace(/\r?\n/g, ` `);
+      return `"` + str.replace(/"/g, `""`) + `"`;
+    }
+
+    function exportAllCsv() {
+      const headers = [
+        `Slot`, `ID_Grabacion`, `Asesor_Evaluado`, `Evaluador_Lider`, `Canal`,
+        `Modalidad`, `Tipificacion`, `Fecha`, `Items_Evaluados`, `Total_Items`,
+        `PENC_Obtenido`, `PENC_Max`, `Cumplimiento_PENC_Pct`, `Afectacion_PEC`,
+        `Errores_Criticos_Count`, `Nota_Final`, `Observaciones`, `Aspectos_a_Mejorar`
+      ];
+      const rows = [headers.map(escapeCsv).join(`,`)];
+
+      for (const adv of appState.advisors) {
+        const m = computeAdvisorMetrics(adv);
+        rows.push([
+          `Asesor ` + (adv.slotIndex + 1),
+          adv.recordingId || ``,
+          adv.agentName || `Sin asignar`,
+          adv.evaluatorName || ``,
+          adv.channel || ``,
+          m.mod.label,
+          adv.typification || ``,
+          adv.date || ``,
+          m.evaluatedCount,
+          m.totalItems,
+          m.pencEarned.toFixed(2),
+          m.mod.pencMax,
+          m.pencCompliancePct.toFixed(1),
+          m.hasPecFailure ? `SI (AFECTADO)` : `NO`,
+          m.pecNoCount,
+          m.finalScore === null ? `Pendiente` : m.finalScore.toFixed(1),
+          adv.observations || ``,
+          adv.improvements || ``
+        ].map(escapeCsv).join(`,`));
+      }
+
+      const csvContent = `\uFEFF` + rows.join(`\n`);
+      const filename = `calibracion_mundo_televentas_${getTodayIso()}.csv`;
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === `function`) {
+        window.notebookAppApi.triggerFileDownload({
+          content: csvContent,
+          contentType: `text/csv`,
+          encoding: `UTF-8`,
+          filename
+        });
+        showInlineFeedback(`CSV consolidado descargado.`);
+      }
+    }
+
+    function buildAdvisorTextReport(adv) {
+      const m = computeAdvisorMetrics(adv);
+      const lines = [
+        `============================================================`,
+        `REPORTE DE CALIBRACIÓN DE CALIDAD — TELEVENTAS MUNDO`,
+        `============================================================`,
+        `Slot: Asesor ${adv.slotIndex + 1}`,
+        `Modalidad: ${m.mod.label}`,
+        `ID Grabación / Llamada: ${adv.recordingId || `No especificado`}`,
+        `Asesor Evaluado: ${adv.agentName || `Sin asignar`}`,
+        `Evaluador / Líder: ${adv.evaluatorName || `No especificado`}`,
+        `Área / Canal: ${adv.channel}`,
+        `Tipificación: ${adv.typification || `No especificada`}`,
+        `Fecha: ${adv.date || `No especificada`}`,
+        ``,
+        `RESUMEN DE CALIFICACIÓN`,
+        `------------------------------------------------------------`,
+        `Nota Final de Calibración: ${m.finalScore === null ? `Pendiente` : formatPct(m.finalScore)}`,
+        `Total PENC (Blandos): ${formatPct(m.pencEarned)} / ${formatPct(m.mod.pencMax)} (${formatPct(m.pencCompliancePct)} cumplimiento)`,
+        `Estado PEC (Críticos): ${m.hasPecFailure ? `AFECTACIÓN CRÍTICA (${m.pecNoCount} error/es) -> Nota Final 0,0%` : `Sin afectación (+${formatPct(m.pecEarned)})`}`,
+        `Cobertura: ${m.evaluatedCount} / ${m.totalItems} ítems (N/A: ${m.totalNaCount})`,
+        ``,
+        `DESGLOSE PENC POR BLOQUE`,
+        `------------------------------------------------------------`
+      ];
+
+      for (const b of m.blockBreakdown) {
+        lines.push(`• ${b.name}: ${formatPct(b.earnedNormalized)} / ${formatPct(b.maxNormalized)} (${formatPct(b.pct)})`);
+      }
+
+      if (m.failedPecItems.length > 0) {
+        lines.push(``, `ERRORES CRÍTICOS (PEC) DETECTADOS:`);
+        for (const it of m.failedPecItems) lines.push(`  [X] ${it.title}`);
+      }
+      if (m.failedPencItems.length > 0) {
+        lines.push(``, `DESVÍOS NO CRÍTICOS (PENC) DETECTADOS:`);
+        for (const it of m.failedPencItems) lines.push(`  [-] ${it.title} (${formatWeight(it.weight)})`);
+      }
+
+      lines.push(
+        ``,
+        `OBSERVACIONES:`,
+        adv.observations || `(Sin observaciones registradas)`,
+        ``,
+        `ASPECTOS A MEJORAR:`,
+        adv.improvements || `(Sin aspectos a mejorar registrados)`
+      );
+
+      return lines.join(`\n`);
+    }
+
+    function exportSingleAdvisorReport() {
+      const adv = getActiveAdvisor();
+      const content = buildAdvisorTextReport(adv);
+      const safeName = (adv.agentName || `asesor_${adv.slotIndex + 1}`).toLowerCase().replace(/[^a-z0-9]+/g, `_`);
+      const filename = `calibracion_${safeName}_${adv.date || getTodayIso()}.txt`;
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === `function`) {
+        window.notebookAppApi.triggerFileDownload({
+          content,
+          contentType: `text/plain`,
+          encoding: `UTF-8`,
+          filename
+        });
+        showInlineFeedback(`Ficha del asesor descargada.`);
+      }
+    }
+
+    async function copyAdvisorSummary() {
+      const adv = getActiveAdvisor();
+      const text = buildAdvisorTextReport(adv);
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          showInlineFeedback(`Resumen copiado al portapapeles.`);
+          return;
+        }
+      } catch (e) {
+        // Fallback below
+      }
+      showInlineFeedback(`Use "Descargar ficha del asesor (.txt)" en este navegador.`);
+    }
+
+    /* =========================================================================
+       7. DOM RENDERING
+       ========================================================================= */
+    function escapeHtml(str) {
+      return String(str == null ? `` : str)
+        .replace(/&/g, `&amp;`)
+        .replace(/</g, `&lt;`)
+        .replace(/>/g, `&gt;`)
+        .replace(/"/g, `&quot;`);
+    }
+
+    function renderTabs() {
+      let auditedCount = 0;
+      for (let i = 0; i < ADVISOR_COUNT; i++) {
+        const adv = appState.advisors[i];
+        const m = computeAdvisorMetrics(adv);
+        if (m.evaluatedCount > 0) auditedCount++;
+
+        const tabBtn = document.getElementById(`tab-advisor-` + i);
+        const nameEl = document.getElementById(`tab-name-` + i);
+        const modEl = document.getElementById(`tab-mod-` + i);
+        const scoreEl = document.getElementById(`tab-score-` + i);
+
+        if (tabBtn) {
+          tabBtn.classList.toggle(`is-active`, appState.activeTab === i);
+          tabBtn.classList.toggle(`has-pec-tab`, m.hasPecFailure);
+        }
+        if (nameEl) {
+          nameEl.textContent = adv.agentName ? adv.agentName : `Sin asignar`;
+        }
+        if (modEl) {
+          modEl.textContent = m.mod.shortLabel;
+          modEl.className = `tag ` + (m.modKey === `venta` ? `tag-blue` : `tag-gray`);
+        }
+        if (scoreEl) {
+          scoreEl.className = `advisor-tab-score`;
+          if (m.finalScore === null) {
+            scoreEl.textContent = `Pendiente`;
+          } else if (m.hasPecFailure) {
+            scoreEl.textContent = `0,0% (PEC)`;
+            scoreEl.classList.add(`score-crit`);
+          } else {
+            scoreEl.textContent = formatPct(m.finalScore);
+            if (m.finalScore >= 85) scoreEl.classList.add(`score-ok`);
+            else if (m.finalScore >= 60) scoreEl.classList.add(`score-warn`);
+            else scoreEl.classList.add(`score-crit`);
+          }
+        }
+      }
+
+      const cmpTab = document.getElementById(`tab-compare`);
+      const cmpCount = document.getElementById(`tab-compare-count`);
+      if (cmpTab) cmpTab.classList.toggle(`is-active`, appState.activeTab === `compare`);
+      if (cmpCount) cmpCount.textContent = `${auditedCount} / ${ADVISOR_COUNT} auditados`;
+    }
+
+    function renderHeaderForm() {
+      const adv = getActiveAdvisor();
+      const slotLabel = document.getElementById(`active-slot-label`);
+      if (slotLabel) slotLabel.textContent = `Auditoría activa · Asesor ${adv.slotIndex + 1}`;
+
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && el.value !== val) el.value = val;
+      };
+      setVal(`inp-recording-id`, adv.recordingId || ``);
+      setVal(`inp-agent-name`, adv.agentName || ``);
+      setVal(`inp-evaluator-name`, adv.evaluatorName || ``);
+      setVal(`inp-channel`, adv.channel || `Inbound`);
+      setVal(`inp-typification`, adv.typification || ``);
+      setVal(`inp-date`, adv.date || getTodayIso());
+      setVal(`txt-observations`, adv.observations || ``);
+      setVal(`txt-improvements`, adv.improvements || ``);
+
+      const modKey = adv.modality === `venta` ? `venta` : `no_venta`;
+      const mod = MODALITIES[modKey];
+      const btnNV = document.getElementById(`mod-btn-no_venta`);
+      const btnV = document.getElementById(`mod-btn-venta`);
+      if (btnNV) btnNV.classList.toggle(`is-active`, modKey === `no_venta`);
+      if (btnV) btnV.classList.toggle(`is-active`, modKey === `venta`);
+
+      const modNote = document.getElementById(`modality-meta-note`);
+      if (modNote) {
+        modNote.textContent = `${mod.pencItems.length} atributos PENC + ${mod.pecItems.length} atributos PEC`;
+      }
+    }
+
+    function buildDescriptorHtml(item) {
+      const isOpen = !!openDescriptors[item.id];
+      let html = `
+        <button type="button" class="descriptor-toggle" id="desc-btn-${item.id}" aria-expanded="${isOpen ? `true` : `false`}" onclick="toggleDescriptor('${item.id}')">
+          <span>Ver descriptor y criterios de evaluación</span>
+          <svg class="descriptor-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="descriptor-panel ${isOpen ? `is-open` : ``}" id="desc-panel-${item.id}">
+          <div>
+            <span class="descriptor-block-label">Descriptor y Criterios</span>
+            <p class="descriptor-text">${escapeHtml(item.descriptor)}</p>
+          </div>
+      `;
+      if (item.itemObs) {
+        html += `
+          <div>
+            <span class="descriptor-block-label">Observaciones del Ítem / Excepciones</span>
+            <p class="descriptor-text">${escapeHtml(item.itemObs)}</p>
+          </div>
+        `;
+      }
+      if (item.notes) {
+        html += `
+          <div>
+            <span class="descriptor-block-label">Nota de Calibración</span>
+            <p class="descriptor-text">${escapeHtml(item.notes)}</p>
+          </div>
+        `;
+      }
+      html += `</div>`;
+      return html;
+    }
+
+    function shouldShowItem(val, isPec) {
+      if (currentFilter === `all`) return true;
+      if (currentFilter === `pending`) return !val;
+      if (currentFilter === `failed`) return val === `no`;
+      if (currentFilter === `pec`) return isPec;
+      return true;
+    }
+
+    function renderMatrices() {
+      const adv = getActiveAdvisor();
+      const m = computeAdvisorMetrics(adv);
+      const mod = m.mod;
+      const modScores = (adv.scores && adv.scores[m.modKey]) ? adv.scores[m.modKey] : {};
+
+      const pencWeightLbl = document.getElementById(`penc-weight-label`);
+      const pencHeaderVal = document.getElementById(`penc-earned-header`);
+      if (pencWeightLbl) pencWeightLbl.textContent = `Sección PENC · Precisión de Error No Crítico (${formatWeight(mod.pencMax)})`;
+      if (pencHeaderVal) pencHeaderVal.textContent = `${formatPct(m.pencEarned)} / ${formatPct(mod.pencMax)}`;
+
+      const pecWeightLbl = document.getElementById(`pec-weight-label`);
+      const pecStatusHdr = document.getElementById(`pec-status-header`);
+      if (pecWeightLbl) pecWeightLbl.textContent = `Sección PEC · Errores Críticos (Aporte ${formatPct(mod.pecBase)} · Regla 0%)`;
+      if (pecStatusHdr) {
+        pecStatusHdr.textContent = m.hasPecFailure
+          ? `AFECTACIÓN CRÍTICA (${m.pecNoCount})`
+          : `Sin afectación (+${formatPct(mod.pecBase)})`;
+      }
+
+      // Render PENC blocks
+      const pencContainer = document.getElementById(`penc-blocks-container`);
+      if (pencContainer) {
+        let pencHtml = ``;
+        for (const block of mod.blocks) {
+          const itemsInBlock = mod.pencItems.filter((it) => it.blockId === block.id);
+          const bStat = m.blockBreakdown.find((b) => b.id === block.id);
+          const visibleItems = itemsInBlock.filter((it) => shouldShowItem(modScores[it.id], false));
+          if (currentFilter === `pec` || (visibleItems.length === 0 && currentFilter !== `all`)) continue;
+
+          pencHtml += `
+            <div class="eval-block">
+              <div class="eval-block-header">
+                <div class="eval-block-title-wrap">
+                  <span class="sub-heading">${escapeHtml(block.name)}</span>
+                  <span class="tag tag-gray">Peso bloque: ${block.weight}%</span>
+                </div>
+                <span class="eval-block-stats">${bStat ? `${formatPct(bStat.earnedNormalized)} / ${formatPct(bStat.maxNormalized)}` : ``}</span>
+              </div>
+              <div class="attr-list">
+          `;
+
+          for (const item of itemsInBlock) {
+            const val = modScores[item.id] || null;
+            const visible = shouldShowItem(val, false);
+            const rowClasses = [`attr-row`];
+            if (val === `no`) rowClasses.push(`is-failed-penc`);
+            if (!visible) rowClasses.push(`is-hidden-filter`);
+
+            let earnedBadge = `<span class="attr-earned">Pendiente</span>`;
+            if (val === `yes`) earnedBadge = `<span class="attr-earned is-yes">Cumple (+${formatWeight(item.weight)})</span>`;
+            else if (val === `no`) earnedBadge = `<span class="attr-earned is-no">Incumple (0,00%)</span>`;
+            else if (val === `na`) earnedBadge = `<span class="attr-earned is-na">No Aplica (Redistribuye)</span>`;
+
+            pencHtml += `
+              <div class="${rowClasses.join(` `)}">
+                <div class="attr-top">
+                  <div class="attr-info">
+                    <div class="attr-meta-line">
+                      <span class="tag tag-blue">${escapeHtml(item.focus)}</span>
+                      <span class="attr-weight">Peso: ${formatWeight(item.weight)}</span>
+                      ${earnedBadge}
+                    </div>
+                    <h3 class="attr-title">${escapeHtml(item.title)}</h3>
+                    ${buildDescriptorHtml(item)}
+                  </div>
+                  <div class="eval-controls" role="group" aria-label="Evaluar ${escapeHtml(item.title)}">
+                    <button type="button" class="eval-opt ${val === `yes` ? `is-selected-yes` : ``}" onclick="setAttributeScore('${item.id}', 'yes')">Sí</button>
+                    <button type="button" class="eval-opt ${val === `no` ? `is-selected-no` : ``}" onclick="setAttributeScore('${item.id}', 'no')">No</button>
+                    <button type="button" class="eval-opt ${val === `na` ? `is-selected-na` : ``}" onclick="setAttributeScore('${item.id}', 'na')">N/A</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+
+          pencHtml += `</div></div>`;
+        }
+        pencContainer.innerHTML = pencHtml || `<div class="layer"><p style="margin:0; font-size:0.875rem; color:var(--on-surface-variant);">No hay atributos PENC visibles con el filtro seleccionado.</p></div>`;
+      }
+
+      // Render PEC block
+      const pecContainer = document.getElementById(`pec-blocks-container`);
+      if (pecContainer) {
+        const visiblePec = mod.pecItems.filter((it) => shouldShowItem(modScores[it.id], true));
+        if (visiblePec.length === 0 && currentFilter !== `all`) {
+          pecContainer.innerHTML = `<div class="layer"><p style="margin:0; font-size:0.875rem; color:var(--on-surface-variant);">No hay atributos PEC visibles con el filtro seleccionado.</p></div>`;
+        } else {
+          let pecHtml = `
+            <div class="eval-block eval-block-pec">
+              <div class="eval-block-header">
+                <div class="eval-block-title-wrap">
+                  <span class="sub-heading">ERRORES CRÍTICOS (PEC)</span>
+                  <span class="tag tag-red">Cualquier «No» anula nota a 0%</span>
+                </div>
+                <span class="eval-block-stats">${m.hasPecFailure ? `${m.pecNoCount} afectado(s)` : `${m.pecYesCount} / ${mod.pecItems.length} sin error`}</span>
+              </div>
+              <div class="attr-list">
+          `;
+
+          for (const item of mod.pecItems) {
+            const val = modScores[item.id] || null;
+            const visible = shouldShowItem(val, true);
+            const rowClasses = [`attr-row`];
+            if (val === `no`) rowClasses.push(`is-failed-pec`);
+            if (!visible) rowClasses.push(`is-hidden-filter`);
+
+            let statusTag = `<span class="attr-earned">Pendiente</span>`;
+            if (val === `yes`) statusTag = `<span class="attr-earned is-yes">Sin error crítico</span>`;
+            else if (val === `no`) statusTag = `<span class="attr-earned is-no">AFECTACIÓN PEC (Nota 0%)</span>`;
+            else if (val === `na`) statusTag = `<span class="attr-earned is-na">No Aplica</span>`;
+
+            pecHtml += `
+              <div class="${rowClasses.join(` `)}">
+                <div class="attr-top">
+                  <div class="attr-info">
+                    <div class="attr-meta-line">
+                      <span class="tag tag-red">${escapeHtml(item.focus)}</span>
+                      <span class="attr-weight">Error Crítico</span>
+                      ${statusTag}
+                    </div>
+                    <h3 class="attr-title">${escapeHtml(item.title)}</h3>
+                    ${buildDescriptorHtml(item)}
+                  </div>
+                  <div class="eval-controls" role="group" aria-label="Evaluar error crítico ${escapeHtml(item.title)}">
+                    <button type="button" class="eval-opt ${val === `yes` ? `is-selected-yes` : ``}" onclick="setAttributeScore('${item.id}', 'yes')">Sí</button>
+                    <button type="button" class="eval-opt ${val === `no` ? `is-selected-no` : ``}" onclick="setAttributeScore('${item.id}', 'no')">No</button>
+                    <button type="button" class="eval-opt ${val === `na` ? `is-selected-na` : ``}" onclick="setAttributeScore('${item.id}', 'na')">N/A</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+
+          pecHtml += `</div></div>`;
+          pecContainer.innerHTML = pecHtml;
+        }
+      }
+    }
+
+    function renderSummary() {
+      const adv = getActiveAdvisor();
+      const m = computeAdvisorMetrics(adv);
+
+      // PEC Alert Banner
+      const banner = document.getElementById(`pec-alert-banner`);
+      const alertList = document.getElementById(`pec-alert-list`);
+      if (banner && alertList) {
+        banner.classList.toggle(`is-visible`, m.hasPecFailure);
+        if (m.hasPecFailure) {
+          alertList.innerHTML = m.failedPecItems.map((it) => `<li>${escapeHtml(it.title)}</li>`).join(``);
+        } else {
+          alertList.innerHTML = ``;
+        }
+      }
+
+      // Main KPI tile
+      const kpiCard = document.getElementById(`kpi-final-card`);
+      const kpiTag = document.getElementById(`kpi-status-tag`);
+      const kpiScore = document.getElementById(`kpi-final-score`);
+      const kpiFormula = document.getElementById(`kpi-formula-note`);
+
+      if (kpiFormula) kpiFormula.textContent = m.mod.formulaText;
+
+      if (kpiCard && kpiTag && kpiScore) {
+        kpiCard.className = `kpi-tile`;
+        kpiScore.className = `kpi-big-value`;
+
+        if (m.finalScore === null) {
+          kpiScore.textContent = `—`;
+          kpiTag.className = `tag tag-gray`;
+          kpiTag.textContent = `Sin evaluar`;
+        } else if (m.hasPecFailure) {
+          kpiScore.textContent = `0,0%`;
+          kpiScore.classList.add(`val-error`);
+          kpiCard.classList.add(`state-error`);
+          kpiTag.className = `tag tag-red`;
+          kpiTag.textContent = `Anulado por PEC`;
+        } else {
+          kpiScore.textContent = formatPct(m.finalScore);
+          if (m.finalScore >= 85) {
+            kpiScore.classList.add(`val-ok`);
+            kpiCard.classList.add(`state-ok`);
+            kpiTag.className = `tag tag-green`;
+            kpiTag.textContent = m.pendingCount > 0 ? `Parcial ≥85%` : `Cumple estándar`;
+          } else if (m.finalScore >= 60) {
+            kpiScore.classList.add(`val-warn`);
+            kpiCard.classList.add(`state-warn`);
+            kpiTag.className = `tag tag-warn`;
+            kpiTag.textContent = m.pendingCount > 0 ? `Parcial` : `En desarrollo`;
+          } else {
+            kpiScore.classList.add(`val-error`);
+            kpiCard.classList.add(`state-error`);
+            kpiTag.className = `tag tag-red`;
+            kpiTag.textContent = m.pendingCount > 0 ? `Parcial bajo` : `Bajo estándar`;
+          }
+        }
+      }
+
+      const pencScoreEl = document.getElementById(`kpi-penc-score`);
+      const pencMaxEl = document.getElementById(`kpi-penc-max`);
+      const pecScoreEl = document.getElementById(`kpi-pec-score`);
+      const pecHelperEl = document.getElementById(`kpi-pec-helper`);
+      const pencPctEl = document.getElementById(`kpi-penc-pct`);
+      const covEl = document.getElementById(`kpi-coverage`);
+      const naEl = document.getElementById(`kpi-na-count`);
+      const modTagEl = document.getElementById(`breakdown-mod-tag`);
+
+      if (pencScoreEl) pencScoreEl.textContent = formatPct(m.pencEarned);
+      if (pencMaxEl) pencMaxEl.textContent = `de ${formatPct(m.mod.pencMax)} blando`;
+      if (pecScoreEl) {
+        pecScoreEl.textContent = m.hasPecFailure ? `0,0%` : (m.evaluatedCount === 0 ? `+${formatPct(m.mod.pecBase)}` : `+${formatPct(m.pecEarned)}`);
+        pecScoreEl.style.color = m.hasPecFailure ? `var(--error)` : `var(--tertiary)`;
+      }
+      if (pecHelperEl) {
+        pecHelperEl.textContent = m.hasPecFailure
+          ? `${m.pecNoCount} error(es) crítico(s)`
+          : `0 errores críticos`;
+      }
+      if (pencPctEl) pencPctEl.textContent = formatPct(m.pencCompliancePct);
+      if (covEl) covEl.textContent = `${m.evaluatedCount} / ${m.totalItems}`;
+      if (naEl) naEl.textContent = `N/A: ${m.totalNaCount} ítems`;
+      if (modTagEl) modTagEl.textContent = m.mod.label;
+
+      // Block bars
+      const barsContainer = document.getElementById(`block-bars-container`);
+      if (barsContainer) {
+        barsContainer.innerHTML = m.blockBreakdown.map((b) => {
+          const widthPct = Math.max(0, Math.min(100, b.pct));
+          const fillClass = b.pct >= 99.9 ? `is-perfect` : (b.pct < 50 ? `is-low` : ``);
+          return `
+            <div class="bar-item">
+              <div class="bar-label-row">
+                <span class="bar-name">${escapeHtml(b.name)}</span>
+                <span class="bar-nums">${formatPct(b.earnedNormalized)} / ${formatPct(b.maxNormalized)}</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill ${fillClass}" style="width: ${widthPct.toFixed(1)}%;"></div>
+              </div>
+            </div>
+          `;
+        }).join(``);
+      }
+
+      // Deviations list
+      const devContainer = document.getElementById(`deviations-container`);
+      const devCountLbl = document.getElementById(`deviations-count-label`);
+      const totalDevs = m.failedPecItems.length + m.failedPencItems.length;
+      if (devCountLbl) devCountLbl.textContent = `${totalDevs} ítems`;
+
+      if (devContainer) {
+        if (totalDevs === 0) {
+          devContainer.innerHTML = `<p style="margin:0; font-size:0.8125rem; color: var(--on-surface-variant);">No se han marcado incumplimientos («No») en esta auditoría.</p>`;
+        } else {
+          let html = `<ul class="deviations-list">`;
+          for (const it of m.failedPecItems) {
+            html += `<li class="deviation-item is-pec"><span>${escapeHtml(it.title)}</span><span class="mono-label" style="color:inherit;">PEC</span></li>`;
+          }
+          for (const it of m.failedPencItems) {
+            html += `<li class="deviation-item"><span>${escapeHtml(it.title)}</span><span class="mono-label">${formatWeight(it.weight)}</span></li>`;
+          }
+          html += `</ul>`;
+          devContainer.innerHTML = html;
+        }
+      }
+    }
+
+    function renderCompareView() {
+      const tbody = document.getElementById(`compare-table-body`);
+      const kpisWrap = document.getElementById(`compare-kpis`);
+
+      let audited = 0;
+      let sumScore = 0;
+      let pecAffectedCount = 0;
+      let totalPencCompliance = 0;
+
+      let rowsHtml = ``;
+      for (const adv of appState.advisors) {
+        const m = computeAdvisorMetrics(adv);
+        if (m.evaluatedCount > 0) {
+          audited++;
+          sumScore += (m.finalScore || 0);
+          totalPencCompliance += m.pencCompliancePct;
+        }
+        if (m.hasPecFailure) pecAffectedCount++;
+
+        let finalTag = `<span class="tag tag-gray">Pendiente</span>`;
+        if (m.finalScore !== null) {
+          if (m.hasPecFailure) finalTag = `<span class="tag tag-red">0,0% (PEC)</span>`;
+          else if (m.finalScore >= 85) finalTag = `<span class="tag tag-green">${formatPct(m.finalScore)}</span>`;
+          else if (m.finalScore >= 60) finalTag = `<span class="tag tag-warn">${formatPct(m.finalScore)}</span>`;
+          else finalTag = `<span class="tag tag-red">${formatPct(m.finalScore)}</span>`;
+        }
+
+        rowsHtml += `
+          <tr>
+            <td><strong>Asesor ${adv.slotIndex + 1}</strong></td>
+            <td>${escapeHtml(adv.agentName || `Sin asignar`)}</td>
+            <td style="font-family:var(--font-label); font-size:0.8125rem;">${escapeHtml(adv.recordingId || `—`)}</td>
+            <td>${escapeHtml(adv.channel)}</td>
+            <td><span class="tag ${m.modKey === `venta` ? `tag-blue` : `tag-gray`}">${m.mod.shortLabel}</span></td>
+            <td>${escapeHtml(adv.evaluatorName || `—`)}<br><span style="font-size:0.75rem; color:var(--on-surface-variant);">${escapeHtml(adv.date || ``)}</span></td>
+            <td class="num-cell">${formatPct(m.pencEarned)} / ${formatPct(m.mod.pencMax)}</td>
+            <td>${m.hasPecFailure ? `<span class="tag tag-red">${m.pecNoCount} error(es)</span>` : `<span class="tag tag-green">Limpio</span>`}</td>
+            <td class="num-cell">${finalTag}</td>
+            <td>
+              <button type="button" class="btn btn-ghost btn-compact" onclick="selectTab(${adv.slotIndex})">
+                Auditar
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+
+      if (tbody) tbody.innerHTML = rowsHtml;
+
+      if (kpisWrap) {
+        const avgFinal = audited > 0 ? formatPct(sumScore / audited) : `—`;
+        const avgPenc = audited > 0 ? formatPct(totalPencCompliance / audited) : `—`;
+        kpisWrap.innerHTML = `
+          <div class="kpi-tile">
+            <span class="mono-label">Asesores Auditados</span>
+            <div class="kpi-big-value">${audited} / ${ADVISOR_COUNT}</div>
+            <span class="sub-metric-helper">Slots independientes activos</span>
+          </div>
+          <div class="kpi-tile">
+            <span class="mono-label">Promedio Nota Final</span>
+            <div class="kpi-big-value">${avgFinal}</div>
+            <span class="sub-metric-helper">Incluye anulaciones PEC en 0%</span>
+          </div>
+          <div class="kpi-tile">
+            <span class="mono-label">Cumplimiento PENC Prom.</span>
+            <div class="kpi-big-value">${avgPenc}</div>
+            <span class="sub-metric-helper">Desempeño habilidades blandas</span>
+          </div>
+          <div class="kpi-tile ${pecAffectedCount > 0 ? `state-error` : `state-ok`}">
+            <span class="mono-label">Casos con Afectación PEC</span>
+            <div class="kpi-big-value ${pecAffectedCount > 0 ? `val-error` : `val-ok`}">${pecAffectedCount}</div>
+            <span class="sub-metric-helper">Auditorías con error crítico</span>
+          </div>
+        `;
+      }
+    }
+
+    function renderAll() {
+      const isCompare = appState.activeTab === `compare`;
+      const auditView = document.getElementById(`audit-view`);
+      const compareView = document.getElementById(`compare-view`);
+
+      if (auditView) auditView.classList.toggle(`is-hidden`, isCompare);
+      if (compareView) compareView.classList.toggle(`is-active`, isCompare);
+
+      renderTabs();
+      if (isCompare) {
+        renderCompareView();
+      } else {
+        renderHeaderForm();
+        renderMatrices();
+        renderSummary();
+      }
+    }
+
+    /* =========================================================================
+       8. BOOTSTRAP
+       ========================================================================= */
+    async function initApp() {
+      await loadPersistedState();
+      renderAll();
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === `function`) {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    document.addEventListener(`DOMContentLoaded`, initApp);
+  </script>
+</body>
+</html>
